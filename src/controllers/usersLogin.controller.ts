@@ -5,13 +5,15 @@ import {
   Get,
   Param,
   Post,
+  UnauthorizedException,
 } from "@nestjs/common";
-import { User } from "src/decorators/user.decorator";
+
 import { UsersService } from "src/services/users/users.service";
 import { UserLoginDto } from "../Dto/userLogin.dto";
-import {} from "class-validator";
+
+
 @Controller("api/users")
-export class UsersController {
+export class UserLoginController {
   constructor(private UsersService: UsersService) {}
 
   @Post("/login")
@@ -20,8 +22,14 @@ export class UsersController {
       payload.userEmail
     );
     if (!userIsExist) {
-      return ;
+      throw new UnauthorizedException({
+        message: "Incorrect password / username",
+        status: false,
+      });
     }
-    return userIsExist;
+    return   await this.UsersService.authLogin(payload.userEmail, payload.userPassword)
+  
+  
+  
   }
 }

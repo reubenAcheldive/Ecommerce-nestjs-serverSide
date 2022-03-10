@@ -6,6 +6,8 @@ export type UserDocument = Users & Document;
 
 @Schema()
 export class Users {
+  @Prop({type: Number,unique: true})
+  id:number
   @Prop({ type: String })
   firstName: string;
   @Prop()
@@ -15,7 +17,7 @@ export class Users {
   @Prop()
   password: string;
   @Prop()
-  isAdmin: boolean;
+  isAdmin?: boolean ;
   @Prop()
   city: string;
   @Prop()
