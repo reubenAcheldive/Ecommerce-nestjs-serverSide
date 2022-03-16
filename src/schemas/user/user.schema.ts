@@ -18,10 +18,7 @@ export class Users {
   password: string;
   @Prop()
   isAdmin?: boolean ;
-  @Prop()
-  city: string;
-  @Prop()
-  address: string;
+
 }
 
 export const UsersSchema = SchemaFactory.createForClass(Users);

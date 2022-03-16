@@ -7,9 +7,10 @@ import {
   Post,
   UnauthorizedException,
 } from "@nestjs/common";
+import { UserAuthLogin } from "src/Dto/usersAuth/userLogin.dto";
 
 import { UsersService } from "src/services/users/users.service";
-import { UserLoginDto } from "../Dto/userLogin.dto";
+
 
 
 @Controller("api/users")
@@ -17,7 +18,7 @@ export class UserLoginController {
   constructor(private UsersService: UsersService) {}
 
   @Post("/login")
-  async getUserByEmail(@Body() payload: UserLoginDto) {
+  async getUserByEmail(@Body() payload: UserAuthLogin) {
     const userIsExist = await this.UsersService.isUserExistsByEmail(
       payload.userEmail
     );

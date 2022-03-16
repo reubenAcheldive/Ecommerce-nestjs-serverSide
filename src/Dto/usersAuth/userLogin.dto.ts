@@ -6,9 +6,10 @@ import {
   IS_EMAIL,
   IsNumber,
   IsNumberString,
+  IsBoolean,
 } from "class-validator";
 
-export class UserLoginDto {
+export class UserAuthLogin {
   @IsEmail()
   userEmail: string;
   @IsNotEmpty()
@@ -30,8 +31,6 @@ export class UserRegister {
 
   @IsString()
   lastName: string;
-  @IsString()
-  city: string;
-  @IsString()
-  address: string;
+  @IsBoolean()
+  isAdmin: boolean;
 }

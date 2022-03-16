@@ -6,7 +6,7 @@ import { HttpExceptionFilter } from "./filters/http-exeption.filter";
 import { AllExceptionsFilter } from "./filters/mongoose.filter";
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule,{cors:true});
   app.useGlobalFilters(
     new AllExceptionsFilter(),
     new FallbackExceptionFilter(),
