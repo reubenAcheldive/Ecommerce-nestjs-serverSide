@@ -1,3 +1,4 @@
+import { CartModule } from './../controllers/cartContoller/cart.module';
 import { CatagoriesAndCitiesModule } from "./../controllers/categoriesAndCities/CategoriesAndCities.module";
 import { Module } from "@nestjs/common";
 import { MongooseModule } from "@nestjs/mongoose";
@@ -12,6 +13,7 @@ import { ProductsModule } from "src/controllers/productsController/product.modul
     UserModule,
     CatagoriesAndCitiesModule,
     ProductsModule,
+    CartModule,
   ],
   controllers: [AppController],
   providers: [AppService],
