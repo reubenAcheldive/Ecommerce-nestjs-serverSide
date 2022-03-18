@@ -1,12 +1,19 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import * as mongoose from "mongoose";
-export type CartDucument = Carts & Document;
-@Schema()
-export class Carts {
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "users" })
-  customerRef: string;
-  @Prop()
-  date: number;
-}
+import { ICart } from 'src/Dto/carts/carts.dto';
 
-export const CartSchema = SchemaFactory.createForClass(Carts)
+import * as mongoose from "mongoose";
+
+
+
+export const CartSchema = new mongoose.Schema <ICart>({
+  customerRef: { type: String, required: true },
+  date: { type: Number, required: true },
+  status: { type: Number, required: true },
+
+  cartItems: [{
+    quantity: Number,
+    products: { type: String, ref: "Products" },
+  }],
+});
+
+
+
