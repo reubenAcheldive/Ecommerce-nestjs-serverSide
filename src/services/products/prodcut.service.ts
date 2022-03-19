@@ -14,7 +14,7 @@ export class ProductService {
 
   async getAllProductsByCategories(categoryRef: string): Promise<IProduct[]> {
     return await this.productDb.find({
-     _id: categoryRef,
+    categoryRef,
     });
   }
 

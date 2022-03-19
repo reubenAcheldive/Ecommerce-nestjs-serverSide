@@ -7,6 +7,7 @@ import {
   Param,
   Post,
 } from "@nestjs/common";
+import { UpdateCartList } from "src/Dto/carts/updateCartProduct";
 import { CartServices } from "src/services/cart/cart.services";
 import { shoppingCartNormalizedInfo } from "src/utils/shoppingCartNormalized";
 
@@ -56,7 +57,7 @@ export class CartController {
     const getCart = await this.cartService.getCartById(cartId);
     return getCart;
   }
-  @Delete("/deleteAllProducts")
+  @Post("/deleteAllProducts")
   async deleteAllProducts(@Body() {cartId}): Promise<void> {
     await this.cartService.deleteAllProductsFromCart(cartId);
   }
@@ -66,7 +67,7 @@ export class CartController {
   }
 
   @Post("/addProduct")
-  async saveProductToCart(@Body() { cartId, productRefId, quantity }) {
+  async saveProductToCart(@Body() { cartId, productRefId, quantity }:UpdateCartList) {
     
 
     const addProduct =  await this.cartService.saveProductToCart(

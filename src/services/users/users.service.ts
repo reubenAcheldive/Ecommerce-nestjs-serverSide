@@ -10,7 +10,7 @@ export class UsersService {
 
   constructor(
     @InjectModel(Users.name) private usersModal: Model<UserDocument>
-  ) { }
+  ) {}
 
   async isUserExistsByEmail(email: string) {
     return this.usersModal.exists({ email });
@@ -39,7 +39,7 @@ export class UsersService {
         message: "The user and password don't match",
         status: false,
       });
-    return { email, firstName, lastName, isAdmin, userId: String(_id) };
+    return { email, firstName, lastName, isAdmin, userId: String(_id),jwt:"test" };
   }
   async getAllUserInformation(email: string) {
     return this.usersModal.find({ email });
@@ -54,14 +54,15 @@ export class UsersService {
 
     const { firstName, email, lastName, id } = payload;
     const createdNewUser = new this.usersModal({
-
       firstName,
       email,
       id,
-
+      isAdmin: false,
       lastName,
       password: encryptedUserPassword,
     });
-    return await createdNewUser.save();
+    return  await createdNewUser.save();
+
+    
   }
 }

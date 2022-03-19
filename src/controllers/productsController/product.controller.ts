@@ -1,8 +1,8 @@
-import { Body, Controller, Param, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { IProduct } from "src/Dto/products/products.dto";
 import { ProductService } from "src/services/products/prodcut.service";
 
-@Controller("api/store")
+@Controller("api/store/")
 export class ProductsController {
   constructor(private productService: ProductService) {}
   @Post("/category/:categoryRef")

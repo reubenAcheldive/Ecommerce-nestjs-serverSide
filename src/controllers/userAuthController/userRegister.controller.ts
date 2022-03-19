@@ -22,7 +22,7 @@ export class UserRegisterController {
   async secondStep(@Body() payload: UserRegister) {
     // const che
     const createUser = await this.UsersService.createNewUser(payload);
-    console.log(createUser);
-    return createUser;
+  const { _id,firstName,lastName ,isAdmin,email} = createUser;
+    return { userId:_id,firstName,lastName ,isAdmin,email,jwt:"test"}
   }
 }
