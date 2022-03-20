@@ -23,6 +23,7 @@ export class UserRegisterController {
     // const che
     const createUser = await this.UsersService.createNewUser(payload);
   const { _id,firstName,lastName ,isAdmin,email} = createUser;
-    return { userId:_id,firstName,lastName ,isAdmin,email,jwt:"test"}
+  const authJwtToken = await this.UsersService.createJwtToken(payload.email,false);
+    return { userId:_id,firstName,lastName ,isAdmin,email,jwt:authJwtToken}
   }
 }
