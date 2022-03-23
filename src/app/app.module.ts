@@ -11,6 +11,7 @@ import { GetUserMiddleware } from "src/middleware/get-user.middleware";
 import { CartController } from "src/controllers/cart/cart.controller";
 import { MongoDB } from "src/config";
 import { OrderModule } from "src/controllers/order/order.module";
+import { CheckToken } from "src/controllers/userAuth/checkToken.contoller";
 
 @Module({
   imports: [
@@ -28,6 +29,6 @@ import { OrderModule } from "src/controllers/order/order.module";
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer):void {
     //forRouts is protect the endpoint without jwt
-    consumer.apply(GetUserMiddleware).forRoutes(CartController)
+    consumer.apply(GetUserMiddleware).forRoutes(CheckToken,CartController)
   }
 }

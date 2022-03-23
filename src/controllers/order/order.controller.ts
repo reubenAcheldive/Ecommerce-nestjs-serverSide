@@ -30,8 +30,10 @@ export class OrderController {
       throw new ForbiddenException({
         message: "need at last 1 product to buy",
       });
+  
+      
     const newOrder = await this.orderService.createNewOrder({
-      ...payload,
+       ...payload,TotalPrice:getTotalPrice
     });
 
     const promises = Promise.all([

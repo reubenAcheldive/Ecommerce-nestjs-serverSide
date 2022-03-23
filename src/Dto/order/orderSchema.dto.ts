@@ -1,4 +1,4 @@
-import { IsString, IsNumber, IsDate, IsOptional, IsDateString } from "class-validator";
+import { IsString, IsNumber, IsDate, IsOptional, IsDateString, IsNumberString } from "class-validator";
 
 export class OrderSchemaDto {
   @IsString()
@@ -7,7 +7,8 @@ export class OrderSchemaDto {
   customerRef: string;
   @IsDateString()
   DateDelivery: Date;
-  @IsNumber()
+  @IsNumberString()
+  @IsOptional()
   TotalPrice: number;
   @IsDate()
   @IsOptional()
@@ -16,6 +17,6 @@ export class OrderSchemaDto {
   address: string;
   @IsString()
   cityDelivery: string;
-  @IsNumber()
+  @IsNumberString()
   fourDigitCreditCard: number;
 }
