@@ -11,8 +11,6 @@ import { UserAuthLogin } from "src/Dto/usersAuth/userLogin.dto";
 
 import { UsersService } from "src/services/users/users.service";
 
-
-
 @Controller("api/users")
 export class UserLoginController {
   constructor(private UsersService: UsersService) {}
@@ -28,9 +26,9 @@ export class UserLoginController {
         status: false,
       });
     }
-    return   await this.UsersService.authLogin(payload.userEmail, payload.userPassword)
-  
-  
-  
+    return await this.UsersService.authLogin(
+      payload.userEmail,
+      payload.userPassword
+    );
   }
 }
