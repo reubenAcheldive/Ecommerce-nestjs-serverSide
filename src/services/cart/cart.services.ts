@@ -1,8 +1,7 @@
-import { CartSchema } from 'src/schemas/carts/carts.schema';
+import { CartSchema } from "src/schemas/carts/carts.schema";
 import { Injectable } from "@nestjs/common";
 import { Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
-
 
 import { ICart } from "src/Dto/carts/carts.dto";
 @Injectable()
@@ -47,17 +46,19 @@ export class CartServices {
   }
 
   async deleteProductFromCart(_id: string, productId: string) {
-    console.log(_id,productId);
-    
-    return await this.cartDb.updateOne(
-      { _id },
-      {
-        $pull: {
-          cartItems: { _id: productId },
+    console.log(_id, productId);
+
+    return await this.cartDb
+      .updateOne(
+        { _id },
+        {
+          $pull: {
+            cartItems: { _id: productId },
+          },
         },
-      },
-      { safe: true, multi: true }
-    ).exec();
+        { safe: true, multi: true }
+      )
+      .exec();
   }
 
   async saveProductToCart(
@@ -77,8 +78,6 @@ export class CartServices {
       console.log(product, "begoure update price");
 
       product.quantity = quantity;
-     
-      
     } else {
       product = await this.cartDb
         .findOneAndUpdate(
@@ -101,10 +100,38 @@ export class CartServices {
       path: "cartItems.products",
       select: "name price imgUrl description",
     });
-    console.log({cart});
-    
-console.log({productItem});
+    console.log({ cart });
+
+    console.log({ productItem });
 
     return productItem;
+  }
+
+  async updateCart(idCart: string, status: number) {
+    const cartUpdate = await this.cartDb.findByIdAndUpdate(
+      { _id: idCart },
+      { $set: { status: status } }
+    );
+    return cartUpdate.save();
+  }
+
+  async getTotalCostOfOrder(_id: string) {
+    const cart = await this.cartDb
+      .findById(_id)
+      .populate({ path: "cartItems.products", select: "price" });
+
+    const productPrices: any[] = await cart?.get("cartItems");
+
+    return this.getTotalCost(productPrices);
+  }
+
+  getTotalCost(listProduct: any) {
+    if (listProduct) {
+      const item = listProduct.map(
+        ({ quantity, products }: any) => quantity * products.price
+      );
+
+      return item.reduce((acc: number, value: number) => acc + value, 0);
+    }
   }
 }

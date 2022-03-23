@@ -6,9 +6,11 @@ import { CartServices } from "src/services/cart/cart.services";
 import { CartController } from "./cart.controller";
 
 @Module({
-  exports: [],
+  
   imports: [MongooseModule.forFeature([{name:"Carts",schema:CartSchema}])],
   controllers: [CartController],
   providers: [CartServices],
+  exports: [MongooseModule.forFeature([{name:"Carts",schema:CartSchema}])],
+
 })
 export class CartModule {}
