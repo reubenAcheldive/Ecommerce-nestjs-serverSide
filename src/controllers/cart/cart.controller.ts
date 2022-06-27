@@ -70,8 +70,8 @@ export class CartController {
     await this.cartService.deleteAllProductsFromCart(cartId);
   }
   @Post("/deleteProduct")
-  async deleteOnProduct(@Body() { cartId, productId }): Promise<any> {
-    return await this.cartService.deleteProductFromCart(cartId, productId);
+  async deleteOnProduct(@Body() { cartId }): Promise<any> {
+    return await this.cartService.deleteProductFromCart(cartId);
   }
 
   @Post("/add-all-items-to-cart")

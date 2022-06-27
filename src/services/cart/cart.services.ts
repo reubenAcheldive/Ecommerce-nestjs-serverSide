@@ -45,7 +45,7 @@ export class CartServices {
     );
   }
 
-  async deleteProductFromCart(_id: string, productId: string) {
+  async deleteProductFromCart(_id: string) {
     return await this.cartDb
       .updateOne(
         { _id },
