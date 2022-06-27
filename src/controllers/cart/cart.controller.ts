@@ -8,7 +8,7 @@ import {
   Post,
   UseGuards,
 } from "@nestjs/common";
-import { UpdateCartList } from "src/Dto/carts/updateCartProduct";
+import { UpdateCartList, updateOneItemInCartItems } from "src/Dto/carts/updateCartProduct";
 import { AuthenticationGuard } from "src/gurds/authentication.guard";
 import { CartServices } from "src/services/cart/cart.services";
 import { shoppingCartNormalizedInfo } from "src/utils/shoppingCartNormalized";
@@ -74,21 +74,22 @@ export class CartController {
     return await this.cartService.deleteProductFromCart(cartId, productId);
   }
 
-  @Post("/addProduct")
-  async saveProductToCart(
-    @Body() { cartId, productRefId, quantity }: UpdateCartList
-  ) {
-    const addProduct = await this.cartService.saveProductToCart(
-      cartId,
-      productRefId,
-      quantity
-    );
-    console.log(addProduct);
-    return addProduct;
+  @Post("/add-all-items-to-cart")
+  async saveProductToCart(@Body() { cartId, items }: UpdateCartList) {
+    const cart = await this.cartService.saveProductToCart(cartId, items);
+
+    return  cart;
   }
 
   @Post("/addNewCart")
   async addNewCart(@Body("customerRef") customerRef: string) {
     return await this.cartService.createNewCart(customerRef);
   }
+  
+  @Post("/update-one-item-cart")
+  async updateItemCart(@Body() {idCart,quantity,productRefId}:updateOneItemInCartItems){
+    return await this.cartService.updateItemInCart(idCart,quantity,productRefId)
+  }
+
+
 }

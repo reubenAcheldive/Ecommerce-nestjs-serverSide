@@ -7,14 +7,15 @@ import {
   IsNumber,
   IsNumberString,
   IsBoolean,
+  IsOptional,
 } from "class-validator";
 
 export class UserAuthLogin {
   @IsEmail()
-  userEmail: string;
+  email: string;
   @IsNotEmpty()
   @IsString()
-  userPassword: string;
+  password: string;
 }
 
 export class UserRegister {
@@ -31,6 +32,4 @@ export class UserRegister {
 
   @IsString()
   lastName: string;
-  @IsBoolean()
-  isAdmin: boolean;
 }

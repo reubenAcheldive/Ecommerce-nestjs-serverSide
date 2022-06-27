@@ -9,9 +9,9 @@ export const CartSchema = new mongoose.Schema <ICart>({
   date: { type: Number, required: true },
   status: { type: Number, required: true },
 
-  cartItems: [{
+  items: [{
     quantity: Number,
-    products: { type: String, ref: "Products" },
+    productRefId: { type: String, ref: "Products" },
   }],
 });
 

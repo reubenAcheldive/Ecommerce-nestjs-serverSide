@@ -20,10 +20,22 @@ export class UserRegisterController {
   @Post("/register")
   // @HttpCode(HttpStatus.OK)
   async secondStep(@Body() payload: UserRegister) {
+   
+
     // const che
     const createUser = await this.UsersService.createNewUser(payload);
-  const { _id,firstName,lastName ,isAdmin,email} = createUser;
-  const authJwtToken = await this.UsersService.createJwtToken(payload.email,false);
-    return { userId:_id,firstName,lastName ,isAdmin,email,jwt:authJwtToken}
+    const { _id, firstName, lastName, isAdmin, email } = createUser;
+    const authJwtToken = await this.UsersService.createJwtToken(
+      payload.email,
+      false
+    );
+    return {
+      userId: _id,
+      firstName,
+      lastName,
+      isAdmin,
+      email,
+      jwt: authJwtToken,
+    };
   }
 }

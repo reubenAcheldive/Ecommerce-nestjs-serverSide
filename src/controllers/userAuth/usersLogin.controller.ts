@@ -18,7 +18,7 @@ export class UserLoginController {
   @Post("/login")
   async getUserByEmail(@Body() payload: UserAuthLogin) {
     const userIsExist = await this.UsersService.isUserExistsByEmail(
-      payload.userEmail
+      payload.email
     );
     if (!userIsExist) {
       throw new UnauthorizedException({
@@ -26,9 +26,6 @@ export class UserLoginController {
         status: false,
       });
     }
-    return await this.UsersService.authLogin(
-      payload.userEmail,
-      payload.userPassword
-    );
+    return await this.UsersService.authLogin(payload.email, payload.password);
   }
 }

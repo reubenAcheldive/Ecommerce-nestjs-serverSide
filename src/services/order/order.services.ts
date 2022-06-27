@@ -15,8 +15,7 @@ export class OrderServices {
     cartRef,
     DateDelivery,
   }: OrderSchemaDto) => {
-    console.log(TotalPrice,"i servicse");
-    
+   
     const newOrder = new this.orderDb({
       DateOfCreateOrder: new Date(),
       TotalPrice,
@@ -39,7 +38,7 @@ export class OrderServices {
   };
   getDetailsOrder = async (_id: string) => {
     const getOrder = await this.orderDb.find({ _id });
-    console.log({ getOrder });
+ 
 
     return getOrder;
   };

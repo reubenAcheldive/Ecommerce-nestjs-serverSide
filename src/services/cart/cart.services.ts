@@ -29,10 +29,10 @@ export class CartServices {
   }
 
   async getCartById(cartId: string) {
-    return await this.cartDb.find({ _id: cartId }).populate({
-      path: "cartItems.products",
-      select: "name price imgUrl description",
-    });
+    const returnCart = this.cartDb
+      .findById({ _id: cartId })
+      .populate({ path: "items.productRefId" });
+    return await returnCart;
   }
 
   async deleteAllProductsFromCart(cartId: string): Promise<void> {
@@ -46,14 +46,12 @@ export class CartServices {
   }
 
   async deleteProductFromCart(_id: string, productId: string) {
-    console.log(_id, productId);
-
     return await this.cartDb
       .updateOne(
         { _id },
         {
           $pull: {
-            cartItems: { _id: productId },
+            items: [],
           },
         },
         { safe: true, multi: true }
@@ -64,47 +62,53 @@ export class CartServices {
   async saveProductToCart(
     _id: string,
 
-    productRefId: string,
-    quantity: number
+    items: [
+      {
+        quantity: number;
+        productRefId: string;
+      }
+    ]
   ) {
-    const cart = await this.cartDb.findById(_id);
-    const cartItems: any[] = await cart?.get("cartItems");
-
-    let product = cartItems.find(
-      (product) => product.products === productRefId
+    const addToCart = await this.cartDb.findByIdAndUpdate(
+      { _id },
+      {
+        $push: {
+          items: items,
+        },
+      }
     );
+    await addToCart.save({ validateBeforeSave: true });
+    const returnCart = this.cartDb
+      .findById({ _id })
+      .populate({ path: "items.productRefId" });
+    return await returnCart;
+  }
 
-    if (product) {
-      console.log(product, "begoure update price");
+  async updateItemInCart(
+    idCart: string,
+    quantity: number,
+    productRefId: string
+  ) {
+    let cart = await this.cartDb.findById({ _id: idCart });
+    cart.date = 280;
 
-      product.quantity = quantity;
-    } else {
-      product = await this.cartDb
-        .findOneAndUpdate(
-          { _id },
-          {
-            $push: {
-              cartItems: { quantity, products: productRefId },
-            },
-          },
-          { new: true }
-        )
-        .populate({
-          path: "cartItems.products",
-          select: "name price imgUrl description",
-        });
-      return product;
-    }
-    await cart?.save();
-    const productItem = await this.cartDb.findById({ _id }).populate({
-      path: "cartItems.products",
-      select: "name price imgUrl description",
-    });
-    console.log({ cart });
+    let getAllItems: [
+      {
+        quantity: Number;
+        productRefId: String;
+      }
+    ] = cart.items;
 
-    console.log({ productItem });
+    let getItem = getAllItems.find((item) => item.productRefId == productRefId);
 
-    return productItem;
+    if (!getItem?.productRefId) return;
+
+    getItem.quantity = quantity;
+    await cart.save();
+    const returnCart = this.cartDb
+      .findById({ _id: idCart })
+      .populate({ path: "items.productRefId" });
+    return await returnCart;
   }
 
   async updateCart(idCart: string, status: number) {
@@ -118,7 +122,7 @@ export class CartServices {
   async getTotalCostOfOrder(_id: string) {
     const cart = await this.cartDb
       .findById(_id)
-      .populate({ path: "cartItems.products", select: "price" });
+      .populate({ path: "cartItems.productRefId", select: "price" });
 
     const productPrices: any[] = await cart?.get("cartItems");
 

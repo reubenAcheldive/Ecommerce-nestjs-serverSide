@@ -9,10 +9,10 @@ export class ICart {
 status: number;
   _id?: any;
   @IsArray()
-  cartItems: [
+  items: [
     {
       quantity: Number;
-      products: String;
+      productRefId: String;
     }
   ];
 }

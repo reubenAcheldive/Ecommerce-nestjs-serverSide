@@ -1,10 +1,23 @@
-import { IsArray, IsNumber, IsString } from "class-validator";
+import { ArrayContains, IsArray, IsNumber, IsString } from "class-validator";
+import { isArrayBuffer } from "util/types";
 
 export class UpdateCartList {
-    @IsString()
-  cartId: string;
   @IsString()
-  productRefId: string;
+  cartId: string;
+  @ArrayContains([])
+  items: [
+    {
+      productRefId: string;
+      quantity: number;
+    }
+  ];
+}
+
+export class updateOneItemInCartItems {
+  @IsString()
+  idCart: string;
   @IsNumber()
   quantity: number;
+  @IsString()
+  productRefId: string;
 }

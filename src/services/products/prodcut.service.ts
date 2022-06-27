@@ -23,7 +23,7 @@ export class ProductService {
     return category;
   }
   async editProduct(id: string, product: IProduct) {
-    console.log(id, { product });
+
 
     const editProduct = await this.productDb.findOneAndUpdate(
       {

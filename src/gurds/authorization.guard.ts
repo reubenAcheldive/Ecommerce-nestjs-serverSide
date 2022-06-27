@@ -14,14 +14,12 @@ export class AuthorizationGuard implements CanActivate {
       request = host.getRequest();
     const user = request["user"];
     const allowed = this.isAllowed(user.isAdmin);
-    console.log("user is allowed", allowed);
+ 
     if (!allowed) {
-      console.log(
-        "user is authentication but not unauthorized denynig access "
-      );
+  
       throw new ForbiddenException();
     }
-    console.log("user is authorization allowedid access");
+   
     return true;
   }
 

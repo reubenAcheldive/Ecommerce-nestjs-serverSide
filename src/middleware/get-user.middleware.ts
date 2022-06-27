@@ -8,12 +8,12 @@ export class GetUserMiddleware implements NestMiddleware {
     const authJwtToken = req.headers.authorization;
     if (!authJwtToken) throw  new UnauthorizedException();
     const token = authJwtToken.split(" ")[1];
-    console.log(token);
+
 
     ("authentication");
     try {
       const user = jwt.verify(token, JWT_Secret);
-      console.log(user);
+
 
       if (!user) {
         throw  new UnauthorizedException();
@@ -22,7 +22,7 @@ export class GetUserMiddleware implements NestMiddleware {
      
       req["user"] = user;
     } catch (error: any) {
-      console.log(error, "error in jwt");
+ 
     }
     next();
   }

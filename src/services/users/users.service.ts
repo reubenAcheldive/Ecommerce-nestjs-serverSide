@@ -49,7 +49,7 @@ export class UsersService {
       });
 
     const authJwtToken = await this.createJwtToken(email, isAdmin);
-    console.log(authJwtToken);
+ 
 
     return {
       email,
@@ -69,7 +69,7 @@ export class UsersService {
       payload.password,
       this.salt
     );
-    console.log(payload);
+   
 
     const { firstName, email, lastName, id } = payload;
     const createdNewUser = new this.usersModal({
@@ -96,7 +96,7 @@ export class UsersService {
     const { email, firstName, lastName, isAdmin, _id } = findUser[0];
 
     const authJwtToken = await this.createJwtToken(email, isAdmin);
-    console.log(authJwtToken);
+ 
 
     return {
       email,
