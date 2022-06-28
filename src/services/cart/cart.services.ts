@@ -104,7 +104,9 @@ export class CartServices {
     if (!getItem?.productRefId) return;
 
     getItem.quantity = quantity;
+
     await cart.save();
+    
     const returnCart = this.cartDb
       .findById({ _id: idCart })
       .populate({ path: "items.productRefId" });
