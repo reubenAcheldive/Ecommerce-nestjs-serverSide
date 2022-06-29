@@ -50,7 +50,7 @@ export class CartServices {
       .updateOne(
         { _id },
         {
-          $pull: {
+          $unset: {
             items: [],
           },
         },
@@ -90,23 +90,66 @@ export class CartServices {
     productRefId: string
   ) {
     let cart = await this.cartDb.findById({ _id: idCart });
-  
 
     let getAllItems: [
       {
         quantity: Number;
         productRefId: String;
+        _id: string;
       }
     ] = cart.items;
 
-    let getItem = getAllItems.find((item) => item.productRefId == productRefId);
+    let getItem = getAllItems.find(
+      (item, i) => item.productRefId == productRefId
+    );
 
-    if (!getItem?.productRefId) return;
+    if (quantity === 0) {
+      return await this.deletedItem(idCart, getItem);
+    } else {
+      if (!getItem?.productRefId) {
+        console.log({ quantity, productRefId });
+        let newItem = [
+          {
+            productRefId,
+            quantity: Number(quantity),
+          },
+        ];
 
-    getItem.quantity = quantity;
+        const addToCart = await this.cartDb.findByIdAndUpdate(
+          { _id: idCart },
+          {
+            $push: {
+              items: newItem,
+            },
+          }
+        );
+        await addToCart.save();
+      } else {
+        getItem.quantity = quantity;
 
-    await cart.save();
-    
+        await cart.save();
+      }
+
+      const returnCart = this.cartDb
+        .findById({ _id: idCart })
+        .populate({ path: "items.productRefId" });
+      return await returnCart;
+    }
+  }
+
+  private async deletedItem(
+    idCart: string,
+    getItem: { quantity: Number; productRefId: String; _id: string }
+  ) {
+    const removeItem = await this.cartDb.updateOne(
+      { _id: idCart },
+      { $pull: { items: { _id: getItem._id.toString() } } }
+    );
+
+    return this.cartWithPopulate(idCart);
+  }
+
+  private async cartWithPopulate(idCart: string) {
     const returnCart = this.cartDb
       .findById({ _id: idCart })
       .populate({ path: "items.productRefId" });

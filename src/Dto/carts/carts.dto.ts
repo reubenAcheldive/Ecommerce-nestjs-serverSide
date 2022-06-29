@@ -5,14 +5,15 @@ export class ICart {
   date: number;
   @IsString()
   customerRef: string;
-@IsNumber()
-status: number;
+  @IsNumber()
+  status: number;
   _id?: any;
   @IsArray()
   items: [
     {
       quantity: Number;
       productRefId: String;
+      _id: string;
     }
   ];
 }
