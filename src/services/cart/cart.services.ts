@@ -90,7 +90,7 @@ export class CartServices {
     productRefId: string
   ) {
     let cart = await this.cartDb.findById({ _id: idCart });
-    cart.date = 280;
+  
 
     let getAllItems: [
       {
