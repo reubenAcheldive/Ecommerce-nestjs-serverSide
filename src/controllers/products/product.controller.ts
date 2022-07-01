@@ -7,9 +7,10 @@ export class ProductsController {
   constructor(private productService: ProductService) {}
   @Post("/category/:categoryRef")
   async fetchProductByCategoryId(
-    @Param("categoryRef") categoryRef: string
+    @Param("categoryRef") categoryRef: string,
+    @Body("cartId") cartId: string
   ): Promise<IProduct[]> {
-    return await this.productService.getAllProductsByCategories(categoryRef);
+    return await this.productService.getAllProductsByCategories(categoryRef,cartId);
   }
 
   @Post("/search/nameProduct")

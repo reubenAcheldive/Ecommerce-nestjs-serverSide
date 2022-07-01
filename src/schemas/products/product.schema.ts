@@ -5,7 +5,8 @@ import {CategorySchema} from "../CatagoriesAndCities/categories.schema"
 export type ProductDocument = Products & Document;
 @Schema()
 export class Products  implements IProduct{
-  
+ 
+  _id?: string;
  @Prop({ type: String })
   name: string;
   @Prop({ type: String})  

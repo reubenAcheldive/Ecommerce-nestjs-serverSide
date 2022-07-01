@@ -11,8 +11,8 @@ export class ICart {
   @IsArray()
   items: [
     {
-      quantity: Number;
-      productRefId: String;
+      quantity: number;
+      productRefId: string;
       _id: string;
     }
   ];

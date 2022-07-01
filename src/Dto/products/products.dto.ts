@@ -1,6 +1,8 @@
-import { IsString, IsNumber } from "class-validator";
+import { IsString, IsNumber, IsOptional } from "class-validator";
 
 export class IProduct {
+  // @IsOptional()
+  _id?:string;
   @IsString()
   name: string;
   @IsString()
@@ -11,4 +13,6 @@ export class IProduct {
   imgUrl: string;
   @IsString()
   description: string;
+  @IsOptional()
+  quantity?: number;
 }
