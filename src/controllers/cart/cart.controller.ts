@@ -19,6 +19,7 @@ export class CartController {
   constructor(private cartService: CartServices) {}
   @Get("/getCart/:customerRef")
   async getCartShopping(@Param("customerRef") customerRef: string) {
+    console.log(customerRef);
     if (!customerRef)
       throw new BadRequestException({
         success: false,
@@ -28,6 +29,7 @@ export class CartController {
       customerRef,
       1
     );
+
 
     if (cartResponse1.length === 0) {
       const cartResponse2 = await this.cartService.getCartByCustomerId(
@@ -39,7 +41,7 @@ export class CartController {
         const lastCart = [cartResponse2[cartResponse2.length - 1]];
 
         return {
-          message: "Your last order was from",
+          message: `Your last order was from ${cartResponse1[0].date}`,
           cart: lastCart,
           hasOpenCart: false,
         };
@@ -49,11 +51,7 @@ export class CartController {
         };
       }
     } else {
-      return {
-        message: "You have an open cart from",
-        cart: cartResponse1,
-        hasOpenCart: true,
-      };
+      return cartResponse1;
     }
   }
 
@@ -70,8 +68,8 @@ export class CartController {
     await this.cartService.deleteAllProductsFromCart(cartId);
   }
   @Post("/deleteProduct")
-  async deleteOnProduct(@Body() { cartId }): Promise<any> {
-    return await this.cartService.deleteProductFromCart(cartId);
+  async deleteOnProduct(@Body() { cartId ,itemId}): Promise<any> {
+    return await this.cartService.deleteProductFromCart(cartId,itemId);
   }
 
   @Post("/add-all-items-to-cart")
@@ -87,8 +85,8 @@ export class CartController {
   }
   
   @Post("/update-one-item-cart")
-  async updateItemCart(@Body() {idCart,quantity,productRefId}:updateOneItemInCartItems){
-    return await this.cartService.updateItemInCart(idCart,quantity,productRefId)
+  async updateItemCart(@Body() {idCart:_id ,quantity,productRefId}:updateOneItemInCartItems){
+    return await this.cartService.updateItemInCart({_id,quantity,productRefId})
   }
 
 

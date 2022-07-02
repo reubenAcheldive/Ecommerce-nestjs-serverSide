@@ -49,7 +49,6 @@ export class UsersService {
       });
 
     const authJwtToken = await this.createJwtToken(email, isAdmin);
- 
 
     return {
       email,
@@ -69,7 +68,6 @@ export class UsersService {
       payload.password,
       this.salt
     );
-   
 
     const { firstName, email, lastName, id } = payload;
     const createdNewUser = new this.usersModal({
@@ -96,7 +94,6 @@ export class UsersService {
     const { email, firstName, lastName, isAdmin, _id } = findUser[0];
 
     const authJwtToken = await this.createJwtToken(email, isAdmin);
- 
 
     return {
       email,
@@ -106,5 +103,17 @@ export class UsersService {
       userId: String(_id),
       jwt: authJwtToken,
     };
+  }
+
+  async updateUserInfo({ _id, firstName, lastName }) {
+    await this.usersModal.findOneAndUpdate(
+      { _id },
+
+      {
+        firstName,
+        lastName,
+      }
+    );
+    return await this.usersModal.find({ _id });
   }
 }

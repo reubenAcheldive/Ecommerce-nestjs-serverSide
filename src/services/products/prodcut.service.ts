@@ -7,6 +7,7 @@ import {
 import { Model } from "mongoose";
 import { IProduct } from "src/Dto/products/products.dto";
 import { ICart } from "src/Dto/carts/carts.dto";
+const itemsDictionary: Record<string, number> = {};
 @Injectable()
 export class ProductService {
   constructor(
@@ -27,12 +28,12 @@ export class ProductService {
 
       if (getCartItems?.length) {
         let products: IProduct[] = [];
-        const itemsDictionary: Record<string, number> = {};
+
         getCartItems.forEach((item, i) => {
           itemsDictionary[item.productRefId] = item.quantity;
         });
         getProducts.forEach((product: IProduct) => {
-          console.log(itemsDictionary[product._id]);
+          console.log(product);
 
           products.push({
             name: product.name,
@@ -44,7 +45,9 @@ export class ProductService {
             quantity: (product.quantity = itemsDictionary[product._id] || 0),
           });
         });
-        return  products ;
+        return products;
+      } else {
+        return getProducts;
       }
     } else {
       return getProducts;

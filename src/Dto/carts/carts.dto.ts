@@ -1,6 +1,7 @@
 import { IsArray, IsNumber, IsString } from "class-validator";
 
 export class ICart {
+  [x: string]: any;
   @IsNumber()
   date: number;
   @IsString()

@@ -4,15 +4,13 @@ import { Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
 
 import { ICart } from "src/Dto/carts/carts.dto";
+import { PayloadItems } from "./PayloadItems";
 @Injectable()
 export class CartServices {
   constructor(@InjectModel("Carts") private cartDb: Model<ICart>) {}
 
   async getCartByCustomerId(customerRef, status): Promise<ICart[]> {
-    return await this.cartDb.find({ customerRef, status }).populate({
-      path: "cartItems.products",
-      select: "name price imgUrl description",
-    });
+    return await this.cartDb.find({ customerRef, status }).populate({ path: "items.productRefId" });
   }
 
   async createNewCart(customerRef: string): Promise<ICart> {
@@ -29,34 +27,23 @@ export class CartServices {
   }
 
   async getCartById(cartId: string) {
-    const returnCart = this.cartDb
-      .findById({ _id: cartId })
-      .populate({ path: "items.productRefId" });
-    return await returnCart;
+    return await this.cartWithPopulate(cartId);
   }
 
   async deleteAllProductsFromCart(cartId: string): Promise<void> {
     return await this.cartDb.findOneAndUpdate(
       { _id: cartId },
       {
-        cartItems: [],
+        items: [],
       },
       { safe: true, multi: true }
     );
   }
 
-  async deleteProductFromCart(_id: string) {
-    return await this.cartDb
-      .updateOne(
-        { _id },
-        {
-          $unset: {
-            items: [],
-          },
-        },
-        { safe: true, multi: true }
-      )
-      .exec();
+  async deleteProductFromCart(_id: string, itemId: string) {
+    console.log(itemId);
+    
+    await this.deletedItem(_id, null, itemId);
   }
 
   async saveProductToCart(
@@ -84,69 +71,62 @@ export class CartServices {
     return await returnCart;
   }
 
-  async updateItemInCart(
-    idCart: string,
-    quantity: number,
-    productRefId: string
-  ) {
-    let cart = await this.cartDb.findById({ _id: idCart });
+  async updateItemInCart({ _id, quantity, productRefId }: PayloadItems) {
+    let cart = await this.cartDb.findById({ _id });
 
-    let getAllItems: [
-      {
-        quantity: Number;
-        productRefId: String;
-        _id: string;
-      }
-    ] = cart.items;
+    let getAllItems: PayloadItems[] = cart.items;
 
     let getItem = getAllItems.find(
-      (item, i) => item.productRefId == productRefId
+      (item, i) => item.productRefId === productRefId
     );
-
-    if (quantity === 0) {
-      return await this.deletedItem(idCart, getItem);
-    } else {
-      if (!getItem?.productRefId) {
-        console.log({ quantity, productRefId });
-        let newItem = [
-          {
-            productRefId,
-            quantity: Number(quantity),
-          },
-        ];
-
-        const addToCart = await this.cartDb.findByIdAndUpdate(
-          { _id: idCart },
-          {
-            $push: {
-              items: newItem,
-            },
-          }
-        );
-        await addToCart.save();
-      } else {
-        getItem.quantity = quantity;
-
-        await cart.save();
+    if (getItem?.productRefId) {
+      if (quantity === 0) {
+        await this.deletedItem(_id, getItem, null);
+        return await this.cartWithPopulate(_id);
       }
 
-      const returnCart = this.cartDb
-        .findById({ _id: idCart })
-        .populate({ path: "items.productRefId" });
-      return await returnCart;
+      getItem.quantity = quantity;
+      await cart.save();
+      return await this.cartWithPopulate(_id);
+    } else if (!getItem && quantity > 0) {
+      console.log(2);
+      let newItem = [
+        {
+          productRefId,
+          quantity: Number(quantity),
+        },
+      ];
+      console.log({ newItem });
+      const addToCart = await this.cartDb.findByIdAndUpdate(
+        { _id },
+        {
+          $push: {
+            items: newItem,
+          },
+        }
+      );
+      await addToCart.save();
+      return await this.cartWithPopulate(_id);
+    } else {
+      return await this.cartWithPopulate(_id);
     }
   }
 
   private async deletedItem(
     idCart: string,
-    getItem: { quantity: Number; productRefId: String; _id: string }
+    getItem: PayloadItems | null,
+    itemId?: string
   ) {
-    const removeItem = await this.cartDb.updateOne(
-      { _id: idCart },
-      { $pull: { items: { _id: getItem._id.toString() } } }
-    );
-
-    return this.cartWithPopulate(idCart);
+    if (itemId) {
+      await this.cartDb.updateOne(
+        { _id: idCart },
+        { $pull: { items: { _id: itemId } } }
+      );
+    } else
+      await this.cartDb.updateOne(
+        { _id: idCart },
+        { $pull: { items: { _id: getItem._id } } }
+      );
   }
 
   private async cartWithPopulate(idCart: string) {
@@ -161,6 +141,7 @@ export class CartServices {
       { _id: idCart },
       { $set: { status: status } }
     );
+
     return cartUpdate.save();
   }
 

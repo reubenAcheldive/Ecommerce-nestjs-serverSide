@@ -33,3 +33,12 @@ export class UserRegister {
   @IsString()
   lastName: string;
 }
+export class UserUpdate {
+  @IsString()
+  _id: string;
+  @IsString()
+  firstName: string;
+
+  @IsString()
+  lastName: string;
+}
