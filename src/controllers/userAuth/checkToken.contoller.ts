@@ -12,17 +12,12 @@ export class CheckToken {
   constructor(private usersService: UsersService) {}
   @Post("/checkPromotion")
   async verifyToken(@Headers() token: any) {
-   
-  
-   
-  
-    
-    const decodedHeader = jwt_decode<{email:string}>(token.authorization);
-   
-    const {email} = decodedHeader
-    
-    const user = await this.usersService.authJwtToken(email)
+    const decodedHeader = jwt_decode<{ email: string }>(token.authorization);
 
-    return user
+    const { email } = decodedHeader;
+
+    const user = await this.usersService.authJwtToken(email);
+
+    return user;
   }
 }

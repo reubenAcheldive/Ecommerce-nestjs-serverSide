@@ -12,6 +12,7 @@ import { CartController } from "src/controllers/cart/cart.controller";
 import { MongoDB } from "src/config";
 import { OrderModule } from "src/controllers/order/order.module";
 import { CheckToken } from "src/controllers/userAuth/checkToken.contoller";
+import { AddressModule } from "src/controllers/adrress/address.module";
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { CheckToken } from "src/controllers/userAuth/checkToken.contoller";
     ProductsModule,
     CartModule,
     OrderModule,
+    AddressModule
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -25,15 +25,18 @@ export class ProductService {
 
     if (cartId) {
       const getCartItems = (await this.cartDb.findById({ _id: cartId })).items;
-
+      
+        
       if (getCartItems?.length) {
         let products: IProduct[] = [];
 
         getCartItems.forEach((item, i) => {
           itemsDictionary[item.productRefId] = item.quantity;
         });
+
+
         getProducts.forEach((product: IProduct) => {
-          console.log(product);
+          
 
           products.push({
             name: product.name,
@@ -45,6 +48,8 @@ export class ProductService {
             quantity: (product.quantity = itemsDictionary[product._id] || 0),
           });
         });
+        console.log(products);
+        
         return products;
       } else {
         return getProducts;

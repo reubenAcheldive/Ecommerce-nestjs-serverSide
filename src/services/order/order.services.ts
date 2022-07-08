@@ -15,7 +15,6 @@ export class OrderServices {
     cartRef,
     DateDelivery,
   }: OrderSchemaDto) => {
-   
     const newOrder = new this.orderDb({
       DateOfCreateOrder: new Date(),
       TotalPrice,
@@ -38,7 +37,6 @@ export class OrderServices {
   };
   getDetailsOrder = async (_id: string) => {
     const getOrder = await this.orderDb.find({ _id });
- 
 
     return getOrder;
   };
@@ -66,9 +64,7 @@ export class OrderServices {
     return dateAvailable;
   };
 
- async checkDateDelivery (DateDelivery) {
-    return await this.orderDb.find({DateDelivery})
+  async checkDateDelivery(DateDelivery) {
+    return await this.orderDb.find({ DateDelivery });
   }
-
-  
 }

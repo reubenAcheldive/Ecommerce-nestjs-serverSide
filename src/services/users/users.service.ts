@@ -6,6 +6,7 @@ import { Model } from "mongoose";
 import { UserDocument, Users } from "src/schemas/user/user.schema";
 import * as jwt from "jsonwebtoken";
 import { JWT_Secret } from "src/config";
+import { ChangePersonalDetails } from "./../../Dto/usersAuth/changePersonalDetails";
 @Injectable()
 export class UsersService {
   salt = bcrypt?.genSaltSync(2);
@@ -105,7 +106,7 @@ export class UsersService {
     };
   }
 
-  async updateUserInfo({ _id, firstName, lastName }) {
+  async updateUserInfo({ _id, firstName, lastName }: ChangePersonalDetails) {
     await this.usersModal.findOneAndUpdate(
       { _id },
 
@@ -114,6 +115,14 @@ export class UsersService {
         lastName,
       }
     );
-    return await this.usersModal.find({ _id });
+    const user =  this.usersModal.find({ _id });
+    return {
+      firstName,
+      lastName,
+      isAdmin: false,
+      userId: String(_id),
+      jwt: await this.createJwtToken(user[0]?.email, false),
+    };
   }
 }
+//"address"

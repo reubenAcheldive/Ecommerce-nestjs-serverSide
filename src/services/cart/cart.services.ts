@@ -10,7 +10,9 @@ export class CartServices {
   constructor(@InjectModel("Carts") private cartDb: Model<ICart>) {}
 
   async getCartByCustomerId(customerRef, status): Promise<ICart[]> {
-    return await this.cartDb.find({ customerRef, status }).populate({ path: "items.productRefId" });
+    return await this.cartDb
+      .find({ customerRef, status })
+      .populate({ path: "items.productRefId" });
   }
 
   async createNewCart(customerRef: string): Promise<ICart> {
@@ -42,7 +44,7 @@ export class CartServices {
 
   async deleteProductFromCart(_id: string, itemId: string) {
     console.log(itemId);
-    
+
     await this.deletedItem(_id, null, itemId);
   }
 
@@ -148,20 +150,25 @@ export class CartServices {
   async getTotalCostOfOrder(_id: string) {
     const cart = await this.cartDb
       .findById(_id)
-      .populate({ path: "cartItems.productRefId", select: "price" });
+      .populate({ path: "items.productRefId" });
 
-    const productPrices: any[] = await cart?.get("cartItems");
+    const productPrices:any = await cart?.get("items");
+    console.log(productPrices);
+    
 
     return this.getTotalCost(productPrices);
   }
 
-  getTotalCost(listProduct: any) {
-    if (listProduct) {
-      const item = listProduct.map(
-        ({ quantity, products }: any) => quantity * products.price
+  getTotalCost(items: any) {
+    console.log(items);
+    
+    if (items) {
+      const Items =items.map(
+        (item) => item.quantity * item.productRefId.price
       );
 
-      return item.reduce((acc: number, value: number) => acc + value, 0);
+      return Items.reduce((acc: number, value: number) => acc + value, 0);
     }
   }
+  
 }
