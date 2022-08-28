@@ -14,10 +14,10 @@ import { OrderModule } from "src/controllers/order/order.module";
 import { CheckToken } from "src/controllers/userAuth/checkToken.contoller";
 import { AddressModule } from "src/controllers/adrress/address.module";
 import { GeneratorPdfModule } from "src/controllers/Generator-pdf/GeneratorPDf.module";
+import { PaymentModule } from "src/controllers/payment/payment.module";
 
 @Module({
   imports: [
-  
     MongooseModule.forRoot(MongoDB),
     UserModule,
     CatagoriesAndCitiesModule,
@@ -25,14 +25,15 @@ import { GeneratorPdfModule } from "src/controllers/Generator-pdf/GeneratorPDf.m
     CartModule,
     OrderModule,
     AddressModule,
-    GeneratorPdfModule
+    GeneratorPdfModule,
+    PaymentModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer):void {
+  configure(consumer: MiddlewareConsumer): void {
     //forRouts is protect the endpoint without jwt
-    consumer.apply(GetUserMiddleware).forRoutes(CheckToken,CartController)
+    consumer.apply(GetUserMiddleware).forRoutes(CheckToken, CartController);
   }
 }

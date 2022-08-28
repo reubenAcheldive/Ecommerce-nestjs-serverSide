@@ -9,7 +9,7 @@ export class OrderServices {
   createNewOrder = async ({
     TotalPrice,
     address,
-    fourDigitCreditCard,
+    
     customerRef,
     cityDelivery,
     cartRef,
@@ -19,7 +19,7 @@ export class OrderServices {
       DateOfCreateOrder: new Date(),
       TotalPrice,
       address,
-      fourDigitCreditCard,
+    
       customerRef,
       cityDelivery,
       cartRef,
