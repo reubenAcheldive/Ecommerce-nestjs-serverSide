@@ -7,7 +7,7 @@ import {
 import { Model } from "mongoose";
 import { IProduct } from "src/Dto/products/products.dto";
 import { ICart } from "src/Dto/carts/carts.dto";
-const itemsDictionary: Record<string, number> = {};
+
 @Injectable()
 export class ProductService {
   constructor(
@@ -19,6 +19,7 @@ export class ProductService {
     categoryRef: string,
     cartId: string
   ): Promise<IProduct[]> {
+    const itemsDictionary: Record<string, number> = {};
     const getProducts = await this.productDb.find({
       categoryRef,
     });

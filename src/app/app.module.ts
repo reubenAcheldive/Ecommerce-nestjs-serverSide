@@ -13,6 +13,7 @@ import { MongoDB } from "src/config";
 import { OrderModule } from "src/controllers/order/order.module";
 import { CheckToken } from "src/controllers/userAuth/checkToken.contoller";
 import { AddressModule } from "src/controllers/adrress/address.module";
+import { GeneratorPdfModule } from "src/controllers/Generator-pdf/GeneratorPDf.module";
 
 @Module({
   imports: [
@@ -23,7 +24,8 @@ import { AddressModule } from "src/controllers/adrress/address.module";
     ProductsModule,
     CartModule,
     OrderModule,
-    AddressModule
+    AddressModule,
+    GeneratorPdfModule
   ],
   controllers: [AppController],
   providers: [AppService],

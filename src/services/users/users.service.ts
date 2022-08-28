@@ -39,6 +39,7 @@ export class UsersService {
       });
 
     const { password, email, firstName, lastName, isAdmin, _id } = findUser[0];
+
     const passwordMatch = await bcrypt?.compare(
       passwordFromTheUser,
       String(password)
@@ -83,16 +84,19 @@ export class UsersService {
   }
 
   async authJwtToken(emailFromTheUser: string) {
-    const findUser = await this.usersModal.find({
+    const findUser = await this.usersModal.findOne({
       email: emailFromTheUser,
     });
+    console.log(findUser);
+    
     if (!findUser)
       throw new UnauthorizedException({
         message: "Incorrect password / username",
         status: false,
       });
 
-    const { email, firstName, lastName, isAdmin, _id } = findUser[0];
+    const { email, firstName, lastName, isAdmin, _id } = findUser;
+    console.log({findUser});
 
     const authJwtToken = await this.createJwtToken(email, isAdmin);
 
@@ -115,13 +119,15 @@ export class UsersService {
         lastName,
       }
     );
-    const user =  this.usersModal.find({ _id });
+    const user = await this.usersModal.findById({ _id });
+    console.log(user.email);
+
     return {
       firstName,
       lastName,
       isAdmin: false,
       userId: String(_id),
-      jwt: await this.createJwtToken(user[0]?.email, false),
+      jwt: await this.createJwtToken(user.email, false),
     };
   }
 }

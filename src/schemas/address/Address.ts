@@ -6,16 +6,16 @@ export type AddressDocuments = Address & Document;
 @Schema()
 export class Address implements IAddressValidator {
   @Prop({ type: String })
-  customerRef: String;
+  customerRef: string;
   @Prop({ type: String })
-  city: String;
+  city: string;
   @Prop({ type: String })
-  streetAddress: String;
+  streetAddress: string;
   @Prop({ type: Number })
-  entering: Number;
+  entering: number;
   @Prop({ type: Number })
-  homeNumber: Number;
+  homeNumber: number;
   @Prop({ type: Number })
-  departmentNumber: Number;
+  departmentNumber: number;
 }
 export const AddressSchema = SchemaFactory.createForClass(Address)
