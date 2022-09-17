@@ -8,9 +8,9 @@ export class ProductsController {
   @Post("/category/:categoryRef")
   async fetchProductByCategoryId(
     @Param("categoryRef") categoryRef: string,
-    @Body("cartId") cartId: string
+    
   ): Promise<IProduct[]> {
-    return await this.productService.getAllProductsByCategories(categoryRef,cartId);
+    return await this.productService.getAllProductsByCategories(categoryRef);
   }
 
   @Post("/search/nameProduct")

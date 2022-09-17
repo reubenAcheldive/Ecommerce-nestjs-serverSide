@@ -8,7 +8,10 @@ import {
   Post,
   UseGuards,
 } from "@nestjs/common";
-import { UpdateCartList, updateOneItemInCartItems } from "src/Dto/carts/updateCartProduct";
+import {
+  UpdateCartList,
+  updateOneItemInCartItems,
+} from "src/Dto/carts/updateCartProduct";
 import { AuthenticationGuard } from "src/gurds/authentication.guard";
 import { CartServices } from "src/services/cart/cart.services";
 import { shoppingCartNormalizedInfo } from "src/utils/shoppingCartNormalized";
@@ -17,9 +20,8 @@ import { shoppingCartNormalizedInfo } from "src/utils/shoppingCartNormalized";
 @UseGuards(AuthenticationGuard)
 export class CartController {
   constructor(private cartService: CartServices) {}
-  @Get("/getCart/:customerRef")
+  @Get("/get-cart-by-customer-ref/:customerRef")
   async getCartShopping(@Param("customerRef") customerRef: string) {
-    console.log(customerRef);
     if (!customerRef)
       throw new BadRequestException({
         success: false,
@@ -29,7 +31,6 @@ export class CartController {
       customerRef,
       1
     );
-
 
     if (cartResponse1.length === 0) {
       const cartResponse2 = await this.cartService.getCartByCustomerId(
@@ -51,7 +52,7 @@ export class CartController {
         };
       }
     } else {
-      return cartResponse1;
+      return cartResponse1[0];
     }
   }
 
@@ -59,7 +60,7 @@ export class CartController {
   async getCartById(@Param("cartId") cartId: string): Promise<any> {
     if (!cartId)
       throw new BadRequestException({ message: "cartId is required" });
-
+    console.log({ cartId });
     const getCart = await this.cartService.getCartById(cartId);
     return getCart;
   }
@@ -68,26 +69,31 @@ export class CartController {
     await this.cartService.deleteAllProductsFromCart(cartId);
   }
   @Post("/deleteProduct")
-  async deleteOnProduct(@Body() { cartId ,itemId}): Promise<any> {
-    return await this.cartService.deleteProductFromCart(cartId,itemId);
+  async deleteOnProduct(@Body() { cartId, itemId }): Promise<any> {
+    return await this.cartService.deleteProductFromCart(cartId, itemId);
   }
 
   @Post("/add-all-items-to-cart")
   async saveProductToCart(@Body() { cartId, items }: UpdateCartList) {
     const cart = await this.cartService.saveProductToCart(cartId, items);
 
-    return  cart;
+    return cart;
   }
 
   @Post("/addNewCart")
   async addNewCart(@Body("customerRef") customerRef: string) {
     return await this.cartService.createNewCart(customerRef);
   }
-  
+
   @Post("/update-one-item-cart")
-  async updateItemCart(@Body() {idCart:_id ,quantity,productRefId}:updateOneItemInCartItems){
-    return await this.cartService.updateItemInCart({_id,quantity,productRefId})
+  async updateItemCart(
+    @Body() { idCart: _id, quantity, productRefId }: updateOneItemInCartItems
+  ) {
+    console.log([{ _id, quantity, productRefId }]);
+    return await this.cartService.updateItemInCart({
+      _id,
+      quantity,
+      productRefId,
+    });
   }
-
-
 }

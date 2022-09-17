@@ -87,7 +87,7 @@ export class UsersService {
     const findUser = await this.usersModal.findOne({
       email: emailFromTheUser,
     });
-    console.log(findUser);
+
     
     if (!findUser)
       throw new UnauthorizedException({
@@ -96,7 +96,7 @@ export class UsersService {
       });
 
     const { email, firstName, lastName, isAdmin, _id } = findUser;
-    console.log({findUser});
+
 
     const authJwtToken = await this.createJwtToken(email, isAdmin);
 
@@ -120,7 +120,7 @@ export class UsersService {
       }
     );
     const user = await this.usersModal.findById({ _id });
-    console.log(user.email);
+
 
     return {
       firstName,

@@ -13,7 +13,7 @@ export class PaymentService {
       return await this.paymentDb.findById({ _id})
     }
 
-  public async getAllPaymentDetailsByCustomerId(customerRef: string) {
+  public async getAllPaymentDetailsByCustomerId(customerRef: Pick<PaymentSchemaDto,'customerRef'>) {
     return await this.paymentDb.find({ customerRef });
   }
 
@@ -38,6 +38,11 @@ export class PaymentService {
     await getPayment.save({ validateBeforeSave: true });
     return await this.getOnePaymentDetails(_id)
   }
+
+  public async deletePaymentById(_id:string){
+    await this.paymentDb.findByIdAndRemove({_id})
+  }
+
   // update payment by id
 
   // deleted Payment by id

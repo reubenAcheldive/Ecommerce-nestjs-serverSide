@@ -43,7 +43,7 @@ export class CartServices {
   }
 
   async deleteProductFromCart(_id: string, itemId: string) {
-    console.log(itemId);
+
 
     await this.deletedItem(_id, null, itemId);
   }
@@ -91,14 +91,14 @@ export class CartServices {
       await cart.save();
       return await this.cartWithPopulate(_id);
     } else if (!getItem && quantity > 0) {
-      console.log(2);
+
       let newItem = [
         {
           productRefId,
           quantity: Number(quantity),
         },
       ];
-      console.log({ newItem });
+ 
       const addToCart = await this.cartDb.findByIdAndUpdate(
         { _id },
         {
@@ -132,10 +132,11 @@ export class CartServices {
   }
 
   private async cartWithPopulate(idCart: string) {
-    const returnCart = this.cartDb
+    const returnCart =await this.cartDb
       .findById({ _id: idCart })
       .populate({ path: "items.productRefId" });
-    return await returnCart;
+      console.log({returnCart})
+    return  returnCart;
   }
 
   async updateCart(idCart: string, status: number) {
@@ -153,14 +154,14 @@ export class CartServices {
       .populate({ path: "items.productRefId" });
 
     const productPrices:any = await cart?.get("items");
-    console.log(productPrices);
+
     
 
     return this.getTotalCost(productPrices);
   }
 
   getTotalCost(items: any) {
-    console.log(items);
+
     
     if (items) {
       const Items =items.map(

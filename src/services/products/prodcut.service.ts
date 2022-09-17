@@ -15,49 +15,10 @@ export class ProductService {
     @InjectModel("Carts") private cartDb: Model<ICart>
   ) {}
 
-  async getAllProductsByCategories(
-    categoryRef: string,
-    cartId: string
-  ): Promise<IProduct[]> {
-    const itemsDictionary: Record<string, number> = {};
-    const getProducts = await this.productDb.find({
+  async getAllProductsByCategories(categoryRef: string): Promise<IProduct[]> {
+   return await this.productDb.find({
       categoryRef,
     });
-
-    if (cartId) {
-      const getCartItems = (await this.cartDb.findById({ _id: cartId })).items;
-      
-        
-      if (getCartItems?.length) {
-        let products: IProduct[] = [];
-
-        getCartItems.forEach((item, i) => {
-          itemsDictionary[item.productRefId] = item.quantity;
-        });
-
-
-        getProducts.forEach((product: IProduct) => {
-          
-
-          products.push({
-            name: product.name,
-            categoryRef: product.categoryRef,
-            price: product.price,
-            imgUrl: product.imgUrl,
-            description: product.description,
-            _id: product._id,
-            quantity: (product.quantity = itemsDictionary[product._id] || 0),
-          });
-        });
-        console.log(products);
-        
-        return products;
-      } else {
-        return getProducts;
-      }
-    } else {
-      return getProducts;
-    }
   }
 
   async getProductById(_id: string) {

@@ -7,7 +7,7 @@ export class GeneratorPdfService {
     try {
     return  fs.writeFileSync("../../../src/files/text.txt", "hello world");
     } catch (error) {
-      console.log(error);
+   
     }
   }
 }

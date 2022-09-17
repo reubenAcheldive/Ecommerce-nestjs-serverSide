@@ -9,7 +9,6 @@ export class AddressController {
 
   @Get(":customerRef")
   async getAddressByCustomerRef(@Param("customerRef") customerRef: string) {
-    console.log(customerRef);
     
     return this.addressService.getAddressByCustomerRef({ customerRef });
   }

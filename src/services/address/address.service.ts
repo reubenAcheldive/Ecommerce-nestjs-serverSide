@@ -38,7 +38,6 @@ export class AddressService {
         streetAddress,
       }
     );
-    console.log(address);
 
     await address.save();
     return await this.findAddressesById(_id);
