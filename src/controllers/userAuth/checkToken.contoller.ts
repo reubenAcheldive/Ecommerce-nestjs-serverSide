@@ -7,7 +7,7 @@ import {
 import { UsersService } from "src/services/users/users.service";
 import jwt_decode from "jwt-decode";
 import { JWT_Secret } from "src/config";
-@Controller("api")
+@Controller("api/users")
 export class CheckToken {
   constructor(private usersService: UsersService) {}
   @Post("/checkPromotion")

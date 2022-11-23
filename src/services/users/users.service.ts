@@ -88,7 +88,6 @@ export class UsersService {
       email: emailFromTheUser,
     });
 
-    
     if (!findUser)
       throw new UnauthorizedException({
         message: "Incorrect password / username",
@@ -96,7 +95,6 @@ export class UsersService {
       });
 
     const { email, firstName, lastName, isAdmin, _id } = findUser;
-
 
     const authJwtToken = await this.createJwtToken(email, isAdmin);
 
@@ -121,13 +119,13 @@ export class UsersService {
     );
     const user = await this.usersModal.findById({ _id });
 
-
     return {
       firstName,
       lastName,
       isAdmin: false,
       userId: String(_id),
       jwt: await this.createJwtToken(user.email, false),
+      email: user.email,
     };
   }
 }

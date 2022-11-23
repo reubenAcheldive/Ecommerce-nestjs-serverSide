@@ -15,7 +15,7 @@ export class AddressService {
   }
 
   async getAddressByCustomerRef({ customerRef }: { customerRef: string }) {
-    return await this.addressDb.findOne({ customerRef: customerRef });
+    return await this.addressDb.find({ customerRef: customerRef });
   }
   async editAddresses(payload: IAddressValidator) {
     const {
@@ -41,5 +41,8 @@ export class AddressService {
 
     await address.save();
     return await this.findAddressesById(_id);
+  }
+  async createNewAddress(payload: IAddressValidator) {
+    return await (await this.addressDb.create(payload)).save();
   }
 }

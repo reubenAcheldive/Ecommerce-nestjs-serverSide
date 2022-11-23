@@ -9,12 +9,14 @@ export class AddressController {
 
   @Get(":customerRef")
   async getAddressByCustomerRef(@Param("customerRef") customerRef: string) {
-    
     return this.addressService.getAddressByCustomerRef({ customerRef });
   }
   @Post("edit")
   async editAddress(@Body() payload: IAddressValidator) {
- 
     return await this.addressService.editAddresses(payload);
+  }
+  @Post("create")
+  async createNewAddress(@Body() payload: IAddressValidator) {
+    return await this.addressService.createNewAddress(payload);
   }
 }

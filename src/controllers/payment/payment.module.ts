@@ -15,5 +15,6 @@ import { PaymentController } from "./payment.controller";
     ]),
   ],
   providers: [PaymentService],
+  exports: [PaymentService],
 })
 export class PaymentModule {}

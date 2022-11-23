@@ -135,7 +135,7 @@ export class CartServices {
     const returnCart =await this.cartDb
       .findById({ _id: idCart })
       .populate({ path: "items.productRefId" });
-      console.log({returnCart})
+ 
     return  returnCart;
   }
 

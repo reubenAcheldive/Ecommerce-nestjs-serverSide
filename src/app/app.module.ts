@@ -34,6 +34,6 @@ import { PaymentModule } from "src/controllers/payment/payment.module";
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {
     //forRouts is protect the endpoint without jwt
-    consumer.apply(GetUserMiddleware).forRoutes(CheckToken, CartController);
+    // consumer.apply(GetUserMiddleware).forRoutes(CheckToken, CartController);
   }
 }

@@ -10,7 +10,7 @@ import { OrderSchemaDto } from "src/Dto/order/orderSchema.dto";
 import { CartServices } from "src/services/cart/cart.services";
 import { OrderServices } from "src/services/order/order.services";
 
-@Controller("api/store")
+@Controller("api/store/order")
 export class OrderController {
   constructor(
     private orderService: OrderServices,
@@ -18,34 +18,9 @@ export class OrderController {
   ) {}
   @Post("/createNewOrder")
   async createNewOrderForCustomer(@Body() payload: OrderSchemaDto) {
-    const order = await this.orderService.checkDateDelivery(
-      payload.DateDelivery
-    );
-
-    if (!order) throw new ForbiddenException({ message: "book is full" });
-    const getTotalPrice = await this.cartService.getTotalCostOfOrder(
-      payload.cartRef
-    );
-    if (!getTotalPrice)
-      throw new ForbiddenException({
-        message: "need at last 1 product to buy",
-      });
-  
-      
-    const newOrder = await this.orderService.createNewOrder({
-       ...payload,TotalPrice:getTotalPrice
-    });
-
-    const promises = Promise.all([
-      await newOrder?.save(),
-
-      await (await this.cartService.updateCart(payload.cartRef, 2))?.save(),
-    ]);
-    if (await promises)
-      return {
-        message: "new Order was created successfully ",
-        idOrder: newOrder._id,
-      };
+ 
+ return  await this.orderService.createNewOrder(payload);
+   
   }
 
   @Get("/getLastOrder/:_id")

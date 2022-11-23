@@ -2,12 +2,37 @@ import { Schema, model } from "mongoose";
 import { OrderSchemaDto } from "src/Dto/order/orderSchema.dto";
 
 export const OrderSchema = new Schema<OrderSchemaDto>({
-  cartRef: { type: String, required: true, ref: "Carts" },
+  cartRef: { type: String, required: true },
   customerRef: { type: String, required: true },
-  DateDelivery: { type: Date, required: true },
-  TotalPrice: { type: Number, required: true },
-  DateOfCreateOrder: { type: Date, required: true },
-  address: { type: String, required: true },
-  cityDelivery: { type: String, required: true },
-  paymentId: { type: String, required: true ,Ref:"Payments"},
+  dateDelivery: { type: String, required: true },
+  totalPrice: { type: Number, required: true },
+  dateOfCreateOrder: { type: String, required: true },
+  addressRef: { type: String, required: true, ref: "addresses" },
+
+  paymentRef: {
+    idPayment: String,
+    cardNumberMask: String,
+  },
+  items: [
+    {
+      quantity: Number,
+      productRefId: {
+        _id: String,
+        name: String,
+        categoryRef: String,
+        price: Number,
+        imgUrl: String,
+        description: String,
+      },
+      _id: { type: String },
+    },
+  ],
 });
+// order
+
+//itemList
+//cartId
+// get current address by address _id
+//get current Payment by Payment _id
+//close cart to statues 2 and create new Cart
+//time close order

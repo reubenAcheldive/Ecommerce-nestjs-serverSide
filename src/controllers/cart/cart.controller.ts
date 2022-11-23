@@ -60,7 +60,7 @@ export class CartController {
   async getCartById(@Param("cartId") cartId: string): Promise<any> {
     if (!cartId)
       throw new BadRequestException({ message: "cartId is required" });
-    console.log({ cartId });
+   
     const getCart = await this.cartService.getCartById(cartId);
     return getCart;
   }
@@ -89,7 +89,7 @@ export class CartController {
   async updateItemCart(
     @Body() { idCart: _id, quantity, productRefId }: updateOneItemInCartItems
   ) {
-    console.log([{ _id, quantity, productRefId }]);
+ 
     return await this.cartService.updateItemInCart({
       _id,
       quantity,

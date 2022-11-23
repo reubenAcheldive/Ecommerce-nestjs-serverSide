@@ -1,30 +1,49 @@
 import {
   IsString,
-  IsNumber,
   IsDate,
   IsOptional,
   IsDateString,
   IsNumberString,
+  isArray,
+  IsArray,
+  IsObject,
+  isString,
 } from "class-validator";
-import { PaymentSchemaDto } from "../payment/payment.dto";
 
 export class OrderSchemaDto {
   @IsString()
   cartRef: string;
   @IsString()
   customerRef: string;
-  @IsDateString()
-  DateDelivery: Date;
+  @IsString()
+  dateDelivery: string;
   @IsNumberString()
   @IsOptional()
-  TotalPrice: number;
-  @IsDate()
+  totalPrice: number;
   @IsOptional()
-  DateOfCreateOrder?: Date;
   @IsString()
-  address: string;
+  dateOfCreateOrder: string;
   @IsString()
-  cityDelivery: string;
-  @IsString()
-  paymentId: string;
+  addressRef: string;
+
+  @IsObject()
+  paymentRef: {
+    idPayment: string;
+    cardNumberMask: string;
+  };
+  @IsArray()
+  items: [
+    {
+      quantity: number;
+      productRefId: {
+        _id: string;
+        name: string;
+        categoryRef: string;
+        price: number;
+        imgUrl: string;
+        description: string;
+      };
+      _id: string;
+    }
+  ];
 }
