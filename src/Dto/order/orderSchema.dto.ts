@@ -11,6 +11,9 @@ import {
 } from "class-validator";
 
 export class OrderSchemaDto {
+  @IsOptional()
+  @IsString()
+  _id?: string;
   @IsString()
   cartRef: string;
   @IsString()

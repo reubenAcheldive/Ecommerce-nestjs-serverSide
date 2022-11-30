@@ -7,15 +7,23 @@ import calculateTotalPrice from "src/utils/TotlPrice";
 import { CartServices } from "../cart/cart.services";
 
 import { PaymentService } from "../payment/payment.service";
+import { GeneratorPDfService } from "../PDF/generatorPDf.service";
 import { AddressService } from "./../address/address.service";
+import * as fs from "fs"
+import { IOrder } from "../../utils/CreateReception"
+import { UsersService } from "../users/users.service";
+
 @Injectable()
 export class OrderServices {
   constructor(
     @InjectModel("Orders") private orderDb: Model<OrderSchemaDto>,
     private cartServices: CartServices,
     private paymentServices: PaymentService,
-    private addressServices: AddressService
-  ) {}
+    private addressServices: AddressService,
+    private generatorPDfService: GeneratorPDfService,
+    private userService: UsersService
+
+  ) { }
 
   createNewOrder = async ({
     customerRef,
@@ -33,7 +41,7 @@ export class OrderServices {
       await this.addressServices.findDefaultAddress({ customerRef });
     const { totalPrice, dateOfCreateOrder } = await this.otilsForOrder(items);
 
-    const createNewOrder = await this.orderDb.create({
+    const createNewOrder: any = await this.orderDb.create({
       cartRef,
       customerRef,
       paymentRef: {
@@ -46,7 +54,17 @@ export class OrderServices {
       dateDelivery: String(new Date(dateDelivery)),
       items,
     });
-    if (createNewOrder) {
+    if (createNewOrder as any) {
+
+      const t = await this.generatorPDfService.createInvoice(createNewOrder)
+
+      try {
+        await fs.appendFileSync(`./src/orderFiles/${createNewOrder._id}.pdf`, t, 'binary')
+      } catch (error) {
+        console.log(error);
+
+      }
+
       const updateCart = await this.cartServices.updateCart(cartRef, 2);
       if (updateCart) {
         const cart = await this.cartServices.createNewCart(customerRef);

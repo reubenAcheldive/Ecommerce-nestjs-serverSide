@@ -13,6 +13,9 @@ import { OrderModule } from "src/controllers/order/order.module";
 import { CheckToken } from "src/controllers/userAuth/checkToken.contoller";
 import { AddressModule } from "src/controllers/adrress/address.module";
 import { PaymentModule } from "src/controllers/payment/payment.module";
+ 
+
+
 
 @Module({
   imports: [
@@ -23,8 +26,9 @@ import { PaymentModule } from "src/controllers/payment/payment.module";
     CartModule,
     OrderModule,
     AddressModule,
-  
+
     PaymentModule,
+
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -11,14 +11,20 @@ import { OrderController } from "./order.controller";
 
 import { AddressModule } from "../adrress/address.module";
 import { PaymentModule } from "../payment/payment.module";
+import { GeneratorPDfService } from "src/services/PDF/generatorPDf.service";
+import { UserModule } from "../userAuth/user.module";
+
 @Module({
   controllers: [OrderController],
-  providers: [OrderServices, CartServices],
+  providers: [OrderServices, CartServices,GeneratorPDfService],
   imports: [
     MongooseModule.forFeature([{ name: "Orders", schema: OrderSchema }]),
     CartModule,
     AddressModule,
     PaymentModule,
+    UserModule
+
   ],
+  exports: [MongooseModule.forFeature([{ name: "Orders", schema: OrderSchema }])]
 })
-export class OrderModule {}
+export class OrderModule { }
