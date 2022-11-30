@@ -23,8 +23,14 @@ export class OrderSchemaDto {
   @IsOptional()
   @IsString()
   dateOfCreateOrder: string;
-  @IsString()
-  addressRef: string;
+  @IsObject()
+  addressRef: {
+    city: string;
+    streetAddress: string;
+    entering: number;
+    homeNumber: number;
+    departmentNumber: number;
+  };
 
   @IsObject()
   paymentRef: {

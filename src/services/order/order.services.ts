@@ -18,39 +18,39 @@ export class OrderServices {
   ) {}
 
   createNewOrder = async ({
-    addressRef,
     customerRef,
     paymentRef,
     items,
     cartRef,
     dateDelivery,
-  }: OrderSchemaDto) => {
-    const payment = await this.paymentServices.getOnePaymentDetails(
-      paymentRef.idPayment
-    );
-    const { totalPrice, dateOfCreateOrder, addresses } =
-      await this.otilsForOrder(addressRef, items);
+  }: Required<Omit<OrderSchemaDto, "addressRef">>) => {
+    console.log(paymentRef.idPayment);
+    const payment = await this.paymentServices.getOnePaymentDetails({
+      _id: paymentRef.idPayment,
+    });
+
+    const getDefaultAddressByCustomer =
+      await this.addressServices.findDefaultAddress({ customerRef });
+    const { totalPrice, dateOfCreateOrder } = await this.otilsForOrder(items);
 
     const createNewOrder = await this.orderDb.create({
       cartRef,
       customerRef,
       paymentRef: {
-        idPayment: payment._id,
+        idPayment: payment?._id,
         cardNumberMask: maskCardNumber(payment.cardNumber),
       },
       totalPrice,
       dateOfCreateOrder,
-      addressRef: addresses._id.toString(),
+      addressRef: getDefaultAddressByCustomer[0],
       dateDelivery: String(new Date(dateDelivery)),
       items,
     });
     if (createNewOrder) {
       const updateCart = await this.cartServices.updateCart(cartRef, 2);
       if (updateCart) {
-        const createNewCartForCustomer = await this.cartServices.createNewCart(
-          customerRef
-        );
-        return { createNewOrder, createNewCartForCustomer };
+        const cart = await this.cartServices.createNewCart(customerRef);
+        return cart;
       }
     }
   };
@@ -58,7 +58,7 @@ export class OrderServices {
   getDetailsOrder = async (_id: string) => {
     const getOrder = await this.orderDb.find({ _id });
 
-    return getOrder;
+    return getOrder[0];
   };
 
   getAllOrder = async () => {
@@ -85,7 +85,6 @@ export class OrderServices {
   };
 
   private async otilsForOrder(
-    addressRef: string,
     items: [
       {
         quantity: number;
@@ -101,10 +100,9 @@ export class OrderServices {
       }
     ]
   ) {
-    const addresses = await this.addressServices.findAddressesById(addressRef);
     const totalPrice = calculateTotalPrice(items as any).toFixed(2);
     const dateOfCreateOrder = String(new Date());
-    return { totalPrice, dateOfCreateOrder, addresses };
+    return { totalPrice, dateOfCreateOrder };
   }
 
   async checkDateDelivery(DateDelivery) {

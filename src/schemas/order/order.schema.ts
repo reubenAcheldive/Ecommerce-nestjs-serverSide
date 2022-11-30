@@ -7,7 +7,13 @@ export const OrderSchema = new Schema<OrderSchemaDto>({
   dateDelivery: { type: String, required: true },
   totalPrice: { type: Number, required: true },
   dateOfCreateOrder: { type: String, required: true },
-  addressRef: { type: String, required: true, ref: "addresses" },
+  addressRef: {
+    city: String,
+    streetAddress: String,
+    entering: Number,
+    homeNumber: Number,
+    departmentNumber: Number,
+  },
 
   paymentRef: {
     idPayment: String,

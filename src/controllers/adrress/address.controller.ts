@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Put } from "@nestjs/common";
 import { IAddressValidator } from "../../Dto/address/address.dto";
 import { AddressService } from "src/services/address/address.service";
 import { path } from "pdfkit";
@@ -12,11 +12,18 @@ export class AddressController {
     return this.addressService.getAddressByCustomerRef({ customerRef });
   }
   @Post("edit")
-  async editAddress(@Body() payload: IAddressValidator) {
+  async editAddress(@Body() payload:  Omit<IAddressValidator, "default">) {
     return await this.addressService.editAddresses(payload);
   }
   @Post("create")
-  async createNewAddress(@Body() payload: IAddressValidator) {
+  async createNewAddress(@Body() payload: Omit<IAddressValidator, "default">) {
     return await this.addressService.createNewAddress(payload);
+  }
+  @Put("pick/address/default")
+  async pickAddress(
+    @Body() payload: Required<Pick<IAddressValidator, "_id" | "default">>
+  ) {
+    
+    return this.addressService.updateDefault(payload);
   }
 }

@@ -9,11 +9,13 @@ export class PaymentService {
     @InjectModel("payments") private paymentDb: Model<PaymentSchemaDto>
   ) {}
   // get payment details
-    public async getOnePaymentDetails(_id:string){
-      return await this.paymentDb.findById({ _id})
-    }
+  public async getOnePaymentDetails({ _id }) {
+    return await this.paymentDb.findById({ _id });
+  }
 
-  public async getAllPaymentDetailsByCustomerId(customerRef: Pick<PaymentSchemaDto,'customerRef'>) {
+  public async getAllPaymentDetailsByCustomerId(
+    customerRef: Pick<PaymentSchemaDto, "customerRef">
+  ) {
     return await this.paymentDb.find({ customerRef });
   }
 
@@ -36,11 +38,11 @@ export class PaymentService {
       { $set: { cardNumber, cvc, cartRef, expiredDate, customerRef, name } }
     );
     await getPayment.save({ validateBeforeSave: true });
-    return await this.getOnePaymentDetails(_id)
+    return await this.getOnePaymentDetails({_id});
   }
 
-  public async deletePaymentById(_id:string){
-    await this.paymentDb.findByIdAndRemove({_id})
+  public async deletePaymentById(_id: string) {
+    await this.paymentDb.findByIdAndRemove({ _id });
   }
 
   // update payment by id

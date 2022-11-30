@@ -17,15 +17,15 @@ export class OrderController {
     private cartService: CartServices
   ) {}
   @Post("/createNewOrder")
-  async createNewOrderForCustomer(@Body() payload: OrderSchemaDto) {
- 
- return  await this.orderService.createNewOrder(payload);
-   
+  async createNewOrderForCustomer(@Body() payload: Required<Omit<OrderSchemaDto,"addressRef">>) {
+    return await this.orderService.createNewOrder(payload);
   }
 
   @Get("/getLastOrder/:_id")
   async getLastOrder(@Param("_id") _id: string) {
     const lastOrder = await this.orderService.getDetailsOrder(_id);
+
+  
     return lastOrder;
   }
   @Get("/all-orders")

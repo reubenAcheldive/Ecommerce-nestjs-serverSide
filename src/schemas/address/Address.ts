@@ -1,10 +1,12 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import mongoose from "mongoose";
 import { IAddressValidator } from "src/Dto/address/address.dto";
 
 export type AddressDocuments = Address & Document;
 
 @Schema()
 export class Address implements IAddressValidator {
+  @Prop({ type: mongoose.Types.ObjectId })
   @Prop({ type: String })
   customerRef: string;
   @Prop({ type: String })
@@ -17,5 +19,7 @@ export class Address implements IAddressValidator {
   homeNumber: number;
   @Prop({ type: Number })
   departmentNumber: number;
+  @Prop({ type: Boolean, default: true })
+  default: boolean;
 }
-export const AddressSchema = SchemaFactory.createForClass(Address)
+export const AddressSchema = SchemaFactory.createForClass(Address);

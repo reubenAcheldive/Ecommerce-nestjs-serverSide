@@ -1,4 +1,4 @@
-import { IsNumber, IsOptional, IsString } from "class-validator";
+import { IsBoolean, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class IAddressValidator {
   @IsOptional()
@@ -10,4 +10,5 @@ export class IAddressValidator {
   @IsNumber() entering: number;
   @IsNumber() homeNumber: number;
   @IsNumber() departmentNumber: number;
+  @IsBoolean() default: boolean;
 }
