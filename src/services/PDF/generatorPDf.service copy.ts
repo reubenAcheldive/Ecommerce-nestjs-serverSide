@@ -11,7 +11,7 @@ export class GeneratorPDfService {
 
       this.generateHeader(doc);
       this.generateCustomerInformation(doc, invoice);
-      this.generateInvoiceTable(doc, invoice);
+      this.generateInvoiceTable(doc, invoice );
       this.generateFooter(doc);
 
       doc.end();
@@ -34,7 +34,7 @@ export class GeneratorPDfService {
       .fontSize(10)
       .text("ACME Inc.", 200, 50, { align: "right" })
       .text("123 Main Street", 200, 65, { align: "right" })
-      .text("New York, NY, 10025", 200, 80, { align: "right" })
+      .text("Israel,TLV,50", 200, 80, { align: "right" })
       .moveDown();
   }
 
@@ -56,7 +56,7 @@ export class GeneratorPDfService {
       .font("Helvetica")
       .text("Invoice Date:", 50, customerInformationTop + 15)
       .text(this.formatDate(new Date()), 150, customerInformationTop + 15)
-      .text("Balance Due:", 50, customerInformationTop + 30)
+     
       .text(
         this.formatCurrency(10),
         150,
@@ -64,7 +64,7 @@ export class GeneratorPDfService {
       )
 
       .font("Helvetica-Bold")
-      .text("reuben achaldive", 300, customerInformationTop)
+      .text("Guest", 300, customerInformationTop) // todo
       .font("Helvetica")
       .text(invoice.addressRef.city, 300, customerInformationTop + 15)
       .text(
@@ -81,7 +81,7 @@ export class GeneratorPDfService {
     this.generateHr(doc, 252);
   }
 
-  generateInvoiceTable(doc: PDFKit.PDFDocument, invoice) {
+  generateInvoiceTable(doc: PDFKit.PDFDocument, invoice: IOrder) {
     let i;
     const invoiceTableTop = 330;
 
@@ -104,11 +104,12 @@ export class GeneratorPDfService {
       this.generateTableRow(
         doc,
         position,
-        item.item,
-        item.description,
-        this.formatCurrency(item.amount / item.quantity),
+        item.productRefId.name,
+        item.productRefId.description,
+        this.formatCurrency(item.productRefId.price),
+       
         item.quantity,
-        this.formatCurrency(item.amount)
+        this.formatCurrency(item.quantity * item.productRefId.price)
       );
 
       this.generateHr(doc, position + 20);
@@ -126,15 +127,7 @@ export class GeneratorPDfService {
     );
 
     const paidToDatePosition = subtotalPosition + 20;
-    this.generateTableRow(
-      doc,
-      paidToDatePosition,
-      "",
-      "",
-      "Paid To Date",
-      "",
-      this.formatCurrency(84)
-    );
+
 
     const duePosition = paidToDatePosition + 25;
     doc.font("Helvetica-Bold");
@@ -143,7 +136,7 @@ export class GeneratorPDfService {
       duePosition,
       "",
       "",
-      "Balance Due",
+      " ",
       "",
       this.formatCurrency(82)
     );
@@ -189,7 +182,7 @@ export class GeneratorPDfService {
   }
 
   formatCurrency(cents:number) {
-    return "$" + (cents / 100).toFixed(2);
+    return "$" + (cents) ;
   }
 
   formatDate(date) {

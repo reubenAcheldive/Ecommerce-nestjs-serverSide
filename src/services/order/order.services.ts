@@ -61,14 +61,15 @@ export class OrderServices {
       try {
         await fs.appendFileSync(`./src/orderFiles/${createNewOrder._id}.pdf`, t, 'binary')
       } catch (error) {
-        console.log(error);
+
+        return new Error("Generated File is Fail");
 
       }
 
       const updateCart = await this.cartServices.updateCart(cartRef, 2);
       if (updateCart) {
         const cart = await this.cartServices.createNewCart(customerRef);
-        return cart;
+        return { cart, IdOrder: createNewOrder._id };
       }
     }
   };
@@ -126,6 +127,12 @@ export class OrderServices {
   async checkDateDelivery(DateDelivery) {
     return await this.orderDb.find({ DateDelivery });
   }
+
+  async getLastIdOrderByCartID({ cartId }: { cartId: string }) {
+    return this.orderDb.findOne({}, { cartRef: cartId })
+  }
+
+
 }
 
 // order

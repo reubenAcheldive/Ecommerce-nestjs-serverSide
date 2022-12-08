@@ -109,7 +109,7 @@ export class GeneratorPDfService {
         item.productRefId.description.slice(0, 4),
         this.formatCurrency(item.productRefId.price),
         item.quantity,
-        this.formatCurrency(item.productRefId.price)
+        this.formatCurrency(item.productRefId.price * item.quantity)
       );
 
       this.generateHr(doc, position + 20);
@@ -126,29 +126,7 @@ export class GeneratorPDfService {
       this.formatCurrency(invoice.totalPrice)
     );
 
-    const paidToDatePosition = subtotalPosition + 20;
-    this.generateTableRow(
-      doc,
-      paidToDatePosition,
-      "",
-      "",
-      "Paid To Date",
-      "",
-      this.formatCurrency( 0)
-    );
-
-    const duePosition = paidToDatePosition + 25;
-    doc.font("Helvetica-Bold");
-    this.generateTableRow(
-      doc,
-      duePosition,
-      "",
-      "",
-      "Balance Due",
-      "",
-      this.formatCurrency(5)
-    );
-    doc.font("Helvetica");
+  
   }
 
   generateFooter(doc: PDFKit.PDFDocument) {

@@ -56,4 +56,5 @@ export class OrderController {
     const DateDelivery = await this.orderService.getAvailableOrderDate();
     return DateDelivery;
   }
+ 
 }
