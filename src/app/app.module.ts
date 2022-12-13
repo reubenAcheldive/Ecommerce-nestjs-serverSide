@@ -20,23 +20,25 @@ import { ServeStaticModule } from "@nestjs/serve-static/dist";
 import { join } from "path";
 import { GetUserMiddleware } from "src/middleware/get-user.middleware";
 import { CartController } from "src/controllers/cart/cart.controller";
+import { AdminModule } from "src/controllers/admin/admin.module";
+import { RouterModule } from "@nestjs/core";
 
 
 
 
 @Module({
   imports: [
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '../../client'),
+    // ServeStaticModule.forRoot({
+    //   rootPath: join(__dirname, '../../client'),
 
-      serveStaticOptions: {
-        redirect: true,
+    //   serveStaticOptions: {
+    //     redirect: true,
 
-      },
-     
+    //   },
 
 
-    }),
+
+    // }),
     ConfigModule.forRoot({ envFilePath: ".development.env", load: [configuration], isGlobal: true, }),
     MongooseModule.forRoot(MongoDB),
     UserModule,
@@ -47,7 +49,12 @@ import { CartController } from "src/controllers/cart/cart.controller";
     AddressModule,
 
     PaymentModule,
+    AdminModule,
+    RouterModule.register([{
+      path: "admin",
+      module: AdminModule,
 
+    }])
   ],
   controllers: [AppController],
   providers: [AppService],
