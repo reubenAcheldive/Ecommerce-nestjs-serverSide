@@ -13,12 +13,31 @@ import { OrderModule } from "src/controllers/order/order.module";
 import { CheckToken } from "src/controllers/userAuth/checkToken.contoller";
 import { AddressModule } from "src/controllers/adrress/address.module";
 import { PaymentModule } from "src/controllers/payment/payment.module";
- 
+import { ConfigModule } from "@nestjs/config";
+import configuration from "src/config/configuration";
+
+import { ServeStaticModule } from "@nestjs/serve-static/dist";
+import { join } from "path";
+import { GetUserMiddleware } from "src/middleware/get-user.middleware";
+import { CartController } from "src/controllers/cart/cart.controller";
+
 
 
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '../../client'),
+
+      serveStaticOptions: {
+        redirect: true,
+
+      },
+     
+
+
+    }),
+    ConfigModule.forRoot({ envFilePath: ".development.env", load: [configuration], isGlobal: true, }),
     MongooseModule.forRoot(MongoDB),
     UserModule,
     CatagoriesAndCitiesModule,
@@ -35,7 +54,6 @@ import { PaymentModule } from "src/controllers/payment/payment.module";
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {
-    //forRouts is protect the endpoint without jwt
-    // consumer.apply(GetUserMiddleware).forRoutes(CheckToken, CartController);
+    consumer.apply(GetUserMiddleware).forRoutes(CheckToken, CartController);
   }
 }
