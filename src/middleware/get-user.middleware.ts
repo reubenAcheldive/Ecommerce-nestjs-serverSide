@@ -13,15 +13,12 @@ export class GetUserMiddleware implements NestMiddleware {
     try {
       const user = jwt.verify(token, JWT_Secret);
 
-
       if (!user) {
         throw new UnauthorizedException();
       }
 
       req["user"] = user;
-    } catch (error: any) {
-
-    }
+    } catch (error: any) {}
     next();
   }
 }

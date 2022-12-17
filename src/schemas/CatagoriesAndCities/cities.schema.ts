@@ -1,5 +1,6 @@
 import { Schema } from "mongoose";
-import { ICities } from "src/Dto/cities/cities.dto";
+import { ICities } from "src/dtos/cities/cities.dto";
+ 
 export const CitiesSchema = new Schema<ICities>({
-  cities:[String],
+  cities: [String],
 });

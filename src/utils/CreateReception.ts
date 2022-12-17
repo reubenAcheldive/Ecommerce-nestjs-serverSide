@@ -1,19 +1,18 @@
-import { OrderSchemaDto } from "src/Dto/order/orderSchema.dto";
+import { OrderSchemaDto } from "src/dtos/order/orderSchema.dto";
+
+ 
 export interface IOrder extends OrderSchemaDto {
-    _id: string;
+  _id: string;
 }
 
 export interface ReceptionOrderContext {
-    renderIdOrder: string;
-    renderItems: string[];
-    renderNameOfBuyer: string;
-    renderAddress: string;
-    renderPayment: string;
-    finishWord: string;
+  renderIdOrder: string;
+  renderItems: string[];
+  renderNameOfBuyer: string;
+  renderAddress: string;
+  renderPayment: string;
+  finishWord: string;
 }
-
-
-
 
 // export function ReceptionOrder(order: IOrder):ReceptionOrderContext {
 //     const renderIdOrder = `Order id ${order._id}`
@@ -45,6 +44,3 @@ export interface ReceptionOrderContext {
 //         finishWord,
 //     }
 // }
-
-
-

@@ -1,60 +1,56 @@
-import { CartModule } from "../controllers/cart/cart.module";
-import { CatagoriesAndCitiesModule } from "./../controllers/categoriesAndCities/CategoriesAndCities.module";
-import { MiddlewareConsumer, Module, NestModule } from "@nestjs/common";
-import { MongooseModule } from "@nestjs/mongoose";
+import { GetUserMiddleware } from "./../middleware/get-user.middleware";
 
 import { AppController } from "./app.controller";
-import { AppService } from "./app.service";
-import { ProductsModule } from "src/controllers/products/product.module";
-import { UserModule } from "src/controllers/userAuth/user.module";
-
-import { MongoDB } from "src/config";
-import { OrderModule } from "src/controllers/order/order.module";
-import { CheckToken } from "src/controllers/userAuth/checkToken.contoller";
-import { AddressModule } from "src/controllers/adrress/address.module";
-import { PaymentModule } from "src/controllers/payment/payment.module";
+import { AdminModule } from "./../admin/admin.module";
+import { Module } from "@nestjs/common/decorators";
+import configuration from "../config/configuration";
 import { ConfigModule } from "@nestjs/config";
-import configuration from "src/config/configuration";
-
-import { ServeStaticModule } from "@nestjs/serve-static/dist";
-import { join } from "path";
-import { GetUserMiddleware } from "src/middleware/get-user.middleware";
-import { CartController } from "src/controllers/cart/cart.controller";
-import { AdminModule } from "src/controllers/admin/admin.module";
-import { RouterModule } from "@nestjs/core";
-
-
-
+import { MongooseModule } from "@nestjs/mongoose";
+import { RouterModule } from "@nestjs/core/router";
+import { AppService } from "./app.service";
+import { MiddlewareConsumer, NestModule } from "@nestjs/common/interfaces";
+import { MongoDB } from "../config";
+import { CheckToken } from "../client/user/controllers/checkToken.contoller";
+import { CartController } from "../client/carts/controller/cart.controller";
+import { ClientModule } from "src/client/client.module";
+import { UserModule } from "src/client/user/user.module";
 
 @Module({
   imports: [
     // ServeStaticModule.forRoot({
     //   rootPath: join(__dirname, '../../client'),
-
     //   serveStaticOptions: {
     //     redirect: true,
-
     //   },
-
-
-
     // }),
-    ConfigModule.forRoot({ envFilePath: ".development.env", load: [configuration], isGlobal: true, }),
+    ConfigModule.forRoot({
+      envFilePath: ".development.env",
+      load: [configuration],
+      isGlobal: true,
+    }),
     MongooseModule.forRoot(MongoDB),
     UserModule,
-    CatagoriesAndCitiesModule,
-    ProductsModule,
-    CartModule,
-    OrderModule,
-    AddressModule,
-
-    PaymentModule,
-    AdminModule,
     RouterModule.register([{
-      path: "admin",
-      module: AdminModule,
+      path: "api",
+      module: UserModule,
 
-    }])
+    }],),
+    ClientModule,
+    RouterModule.register([{
+      path: "api/store",
+      module: ClientModule,
+
+    }],),
+
+    AdminModule,
+    RouterModule.register([
+      {
+
+        path: "admin",
+        module: AdminModule,
+
+      },
+    ]),
   ],
   controllers: [AppController],
   providers: [AppService],
