@@ -7,7 +7,7 @@ import { UserDocument, Users } from "src/schemas/user/user.schema";
 import * as jwt from "jsonwebtoken";
 import { JWT_Secret } from "src/config";
 import { ChangePersonalDetails } from "src/dtos/usersAuth/changePersonalDetails";
- 
+
 @Injectable()
 export class UsersService {
   salt = bcrypt?.genSaltSync(2);

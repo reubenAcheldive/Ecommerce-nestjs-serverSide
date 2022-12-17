@@ -2,10 +2,16 @@ import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { IProduct } from "../../../dtos/products/products.dto";
 import { ProductService } from "../../products/services/prodcut.service";
 
-@Controller("/")
+@Controller("api/store")
 export class ProductsController {
+  t = "s";
   constructor(private productService: ProductService) {}
-  @Post("/category/:categoryRef")
+  @Get("t")
+  f() {
+    return "t";
+  }
+
+  @Post("/:categoryRef")
   async fetchProductByCategoryId(
     @Param("categoryRef") categoryRef: string
   ): Promise<IProduct[]> {
@@ -23,3 +29,4 @@ export class ProductsController {
     return newProduct;
   }
 }
+

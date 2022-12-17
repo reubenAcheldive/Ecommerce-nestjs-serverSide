@@ -1,6 +1,5 @@
 import { OrderSchemaDto } from "src/dtos/order/orderSchema.dto";
 
- 
 export interface IOrder extends OrderSchemaDto {
   _id: string;
 }

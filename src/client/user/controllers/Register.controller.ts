@@ -1,18 +1,10 @@
-import {
-  Body,
-  Controller,
-
-  Post,
-
-} from "@nestjs/common";
+import { Body, Controller, Post } from "@nestjs/common";
 import { UserRegister } from "src/dtos/usersAuth/userLogin.dto";
 import { UsersService } from "../service/users.service";
 
-
-
 @Controller("/users")
 export class UserRegisterController {
-  constructor(private UsersService: UsersService) { }
+  constructor(private UsersService: UsersService) {}
 
   // @UseFilters(AllExceptionsFilter)
   @Post("/register")

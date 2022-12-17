@@ -8,13 +8,15 @@ import {
   Post,
   UseGuards,
 } from "@nestjs/common";
-import { UpdateCartList, updateOneItemInCartItems } from "src/dtos/carts/updateCartProduct";
- 
+import {
+  UpdateCartList,
+  updateOneItemInCartItems,
+} from "src/dtos/carts/updateCartProduct";
+
 import { AuthenticationGuard } from "src/gurds/authentication.guard";
 import { CartServices } from "../services/cart.services";
- 
 
-@Controller("/")
+@Controller("api/store/cart")
 @UseGuards(AuthenticationGuard)
 export class CartController {
   constructor(private cartService: CartServices) {}

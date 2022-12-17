@@ -1,14 +1,12 @@
-
 import { Injectable } from "@nestjs/common";
 import { Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
-
 
 import { PayloadItems } from "../util/PayloadItems";
 import { ICart } from "src/dtos/carts/carts.dto";
 @Injectable()
 export class CartServices {
-  constructor(@InjectModel("Carts") private cartDb: Model<ICart>) { }
+  constructor(@InjectModel("Carts") private cartDb: Model<ICart>) {}
 
   async getCartByCustomerId(customerRef, status): Promise<ICart[]> {
     return await this.cartDb

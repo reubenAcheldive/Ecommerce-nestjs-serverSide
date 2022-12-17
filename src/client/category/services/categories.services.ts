@@ -1,7 +1,7 @@
 import { Model } from "mongoose";
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { CategorySchema } from "../../../schemas/CatagoriesAndCities/categories.schema";
+
 import { ICategories } from "../../../dtos/categories/categories.dto";
 @Injectable()
 export class CategoriesService {

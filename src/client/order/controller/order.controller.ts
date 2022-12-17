@@ -18,7 +18,7 @@ import { createReadStream } from "fs";
 import { join } from "path";
 import type { Response } from "express";
 import { dirname } from "path";
-@Controller("/order")
+@Controller("api/store/order")
 export class OrderController {
   constructor(
     private orderService: OrderServices,

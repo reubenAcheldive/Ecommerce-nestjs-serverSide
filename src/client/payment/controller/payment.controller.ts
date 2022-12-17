@@ -14,7 +14,7 @@ import { PaymentService } from "../..//payment/services/payment.service";
 interface updatePaymentProps {
   data: PaymentSchemaDto;
 }
-@Controller("/payment")
+@Controller("api/store/payment")
 export class PaymentController {
   constructor(private paymentService: PaymentService) {}
 

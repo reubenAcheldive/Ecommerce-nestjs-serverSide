@@ -1,16 +1,11 @@
-import {
-  Controller,
-  Headers,
-  Post,
-
-} from "@nestjs/common";
+import { Controller, Headers, Post } from "@nestjs/common";
 
 import jwt_decode from "jwt-decode";
 import { UsersService } from "../service/users.service";
- 
+
 @Controller("/users")
 export class CheckToken {
-  constructor(private usersService: UsersService) { }
+  constructor(private usersService: UsersService) {}
   @Post("/checkPromotion")
   async verifyToken(@Headers() token: any) {
     const decodedHeader = jwt_decode<{ email: string }>(token.authorization);
@@ -22,4 +17,4 @@ export class CheckToken {
     return user;
   }
 }
-"folder structure"
+("folder structure");
