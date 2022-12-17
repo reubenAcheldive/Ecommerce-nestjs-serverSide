@@ -4,7 +4,7 @@ import {
   ArgumentsHost,
   HttpException,
   HttpStatus,
-  InternalServerErrorException
+  InternalServerErrorException,
 } from "@nestjs/common";
 
 @Catch()
@@ -28,7 +28,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
         statusCode: status,
         path: request.url,
         errorType: type,
-        errorMessage: message
+        errorMessage: message,
       });
     };
 

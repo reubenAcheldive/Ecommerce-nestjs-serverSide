@@ -1,6 +1,7 @@
-import { ICart } from "src/Dto/carts/carts.dto";
+ 
 
 import * as mongoose from "mongoose";
+import { ICart } from "src/dtos/carts/carts.dto";
 
 export const CartSchema = new mongoose.Schema<ICart>({
   customerRef: { type: String, required: true },
@@ -12,7 +13,6 @@ export const CartSchema = new mongoose.Schema<ICart>({
       quantity: Number,
       productRefId: { type: String, ref: "Products" },
     },
-     // _id: { type: mongoose.Types.ObjectId },
+    // _id: { type: mongoose.Types.ObjectId },
   ],
- 
 });

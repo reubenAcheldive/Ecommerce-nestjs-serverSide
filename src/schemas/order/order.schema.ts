@@ -1,5 +1,9 @@
-import { Schema, model } from "mongoose";
-import { OrderSchemaDto } from "src/Dto/order/orderSchema.dto";
+import { Schema } from "mongoose";
+import { OrderSchemaDto } from "src/dtos/order/orderSchema.dto";
+
+ 
+
+ 
 
 export const OrderSchema = new Schema<OrderSchemaDto>({
   cartRef: { type: String, required: true },

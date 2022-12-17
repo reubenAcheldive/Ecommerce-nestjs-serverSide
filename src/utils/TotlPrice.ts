@@ -1,4 +1,6 @@
-import { IProduct } from "src/Dto/products/products.dto";
+import { IProduct } from "src/dtos/products/products.dto";
+
+ 
 
 interface Items {
   quantity: number;
@@ -10,7 +12,5 @@ const calculateTotalPrice = (items: Items[]): number => {
     (a, { quantity, productRefId }) => a + (quantity *= productRefId.price),
     0
   );
-
-  
 };
 export default calculateTotalPrice;

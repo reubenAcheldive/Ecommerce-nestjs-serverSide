@@ -14,12 +14,11 @@ export class AuthorizationGuard implements CanActivate {
       request = host.getRequest();
     const user = request["user"];
     const allowed = this.isAllowed(user.isAdmin);
- 
+
     if (!allowed) {
-  
       throw new ForbiddenException();
     }
-   
+
     return true;
   }
 
