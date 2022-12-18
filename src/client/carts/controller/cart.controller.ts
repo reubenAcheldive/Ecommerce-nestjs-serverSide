@@ -16,7 +16,7 @@ import {
 import { AuthenticationGuard } from "src/gurds/authentication.guard";
 import { CartServices } from "../services/cart.services";
 
-@Controller("api/store/cart")
+@Controller("api/store")
 @UseGuards(AuthenticationGuard)
 export class CartController {
   constructor(private cartService: CartServices) {}

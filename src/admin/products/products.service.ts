@@ -16,5 +16,18 @@ export class ProductsService {
   async editNewProduct(p: Required<IProduct>) {
     return await this.productDb.findByIdAndUpdate(p._id, { ...p });
   }
+  async getAllProducts({ page, limit }: { page: number; limit: number }) {
+    const getProducts = await this.productDb
+      .find()
+      .limit(limit * 1)
+      .skip((page - 1) * limit)
+      .exec();
+    const count = await this.productDb.find().count();
+    return {
+      totalPages: Math.ceil(count / limit),
+
+      getProducts,
+    };
+  }
 }
 

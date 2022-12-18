@@ -2,7 +2,7 @@ import { ChangePersonalDetails } from "./../../../dtos/usersAuth/changePersonalD
 import { Body, Controller, Post } from "@nestjs/common";
 import { UsersService } from "../service/users.service";
 
-@Controller("/users")
+@Controller("api/users")
 export class UpdateUser {
   constructor(private _userService: UsersService) {}
   @Post("/update-user")

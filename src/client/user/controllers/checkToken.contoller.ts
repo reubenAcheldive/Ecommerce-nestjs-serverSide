@@ -3,7 +3,7 @@ import { Controller, Headers, Post } from "@nestjs/common";
 import jwt_decode from "jwt-decode";
 import { UsersService } from "../service/users.service";
 
-@Controller("/users")
+@Controller("api/users")
 export class CheckToken {
   constructor(private usersService: UsersService) {}
   @Post("/checkPromotion")

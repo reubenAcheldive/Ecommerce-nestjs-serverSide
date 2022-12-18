@@ -10,7 +10,7 @@ import {
 import { UserAuthLogin } from "src/dtos/usersAuth/userLogin.dto";
 import { UsersService } from "../service/users.service";
 
-@Controller("/users")
+@Controller("api/users")
 export class UserLoginController {
   constructor(private UsersService: UsersService) {}
 

@@ -2,7 +2,7 @@ import { Body, Controller, Get, Param, Post, Put } from "@nestjs/common";
 import { IAddressValidator } from "src/dtos/address/address.dto";
 import { AddressService } from "../services/address.service";
 
-@Controller('api/store/address/')
+@Controller('api/store/addresses/')
 export class AddressController {
   constructor(private addressService: AddressService) {}
 

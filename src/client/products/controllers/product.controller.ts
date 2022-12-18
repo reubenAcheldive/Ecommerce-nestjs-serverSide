@@ -4,14 +4,9 @@ import { ProductService } from "../../products/services/prodcut.service";
 
 @Controller("api/store")
 export class ProductsController {
-  t = "s";
   constructor(private productService: ProductService) {}
-  @Get("t")
-  f() {
-    return "t";
-  }
 
-  @Post("/:categoryRef")
+  @Post("category/:categoryRef")
   async fetchProductByCategoryId(
     @Param("categoryRef") categoryRef: string
   ): Promise<IProduct[]> {
