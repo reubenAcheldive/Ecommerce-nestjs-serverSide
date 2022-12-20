@@ -6,13 +6,11 @@ import {
 } from "../../../schemas/products/product.schema";
 import { Model } from "mongoose";
 import { IProduct } from "../../../dtos/products/products.dto";
-import { ICart } from "../../../dtos/carts/carts.dto";
 
 @Injectable()
 export class ProductService {
   constructor(
-    @InjectModel(Products.name) private productDb: Model<ProductDocument>,
-    @InjectModel("Carts") private cartDb: Model<ICart>
+    @InjectModel(Products.name) private productDb: Model<ProductDocument>
   ) {}
 
   async getAllProductsByCategories(categoryRef: string): Promise<IProduct[]> {

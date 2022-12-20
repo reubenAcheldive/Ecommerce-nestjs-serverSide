@@ -30,8 +30,7 @@ export class OrderServices {
     items,
     cartRef,
     dateDelivery,
-  }: Required<Omit<OrderSchemaDto, "addressRef">>) => {
-    console.log(paymentRef.idPayment);
+  }: Omit<OrderSchemaDto, "addressRef" | "userName">) => {
     const payment = await this.paymentServices.getOnePaymentDetails({
       _id: paymentRef.idPayment,
     });
@@ -39,8 +38,10 @@ export class OrderServices {
     const getDefaultAddressByCustomer =
       await this.addressServices.findDefaultAddress({ customerRef });
     const { totalPrice, dateOfCreateOrder } = await this.otilsForOrder(items);
+    const user = await this.userService.findUserById(customerRef);
 
     const createNewOrder: any = await this.orderDb.create({
+      userName: `${user.firstName} ${user.lastName}`,
       cartRef,
       customerRef,
       paymentRef: {
@@ -63,7 +64,7 @@ export class OrderServices {
           "binary"
         );
       } catch (error) {
-        return new Error("Generated File is Fail");
+        new Error("Generated File is Fail");
       }
 
       const updateCart = await this.cartServices.updateCart(cartRef, 2);
@@ -143,3 +144,4 @@ export class OrderServices {
 //time close order
 //total Price from cart items
 //date to shipment
+

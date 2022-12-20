@@ -1,12 +1,14 @@
-import { GetUserMiddleware } from "./../middleware/get-user.middleware";
-
+import { AddressController } from "./../client/address/controller/address.controller";
+import { OrderController } from "./../client/order/controller/order.controller";
+import { PaymentController } from "./../client/payment/controller/payment.controller";
+import { CategoryController } from "./../admin/category/category.controller";
 import { AppController } from "./app.controller";
 import { AdminModule } from "./../admin/admin.module";
 import { Module } from "@nestjs/common/decorators";
 import configuration from "../config/configuration";
 import { ConfigModule } from "@nestjs/config";
 import { MongooseModule } from "@nestjs/mongoose";
-import { RouterModule } from "@nestjs/core/router";
+
 import { AppService } from "./app.service";
 import { MiddlewareConsumer, NestModule } from "@nestjs/common/interfaces";
 import { MongoDB } from "../config";
@@ -14,6 +16,9 @@ import { CheckToken } from "../client/user/controllers/checkToken.contoller";
 import { CartController } from "../client/carts/controller/cart.controller";
 import { ClientModule } from "src/client/client.module";
 import { UserModule } from "src/client/user/user.module";
+import { RouterModule } from "@nestjs/core/router";
+import { LazyModuleLoader } from "@nestjs/core/injector";
+import { GetUserMiddlewareMiddleware } from "src/middleware/get-user-middleware.middleware";
 
 @Module({
   imports: [
@@ -29,34 +34,24 @@ import { UserModule } from "src/client/user/user.module";
       isGlobal: true,
     }),
     MongooseModule.forRoot(MongoDB),
-    UserModule,
-    RouterModule.register([{
-      path: "api",
-      module: UserModule,
-
-    }],),
     ClientModule,
-    RouterModule.register([{
-      path: "api/store",
-      module: ClientModule,
-
-    }],),
-
+    UserModule,
     AdminModule,
-    RouterModule.register([
-      {
-
-        path: "admin",
-        module: AdminModule,
-
-      },
-    ]),
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {
-    consumer.apply(GetUserMiddleware).forRoutes(CheckToken, CartController);
+    consumer
+      .apply(GetUserMiddlewareMiddleware)
+      .forRoutes(
+        CheckToken,
+        CartController,
+        PaymentController,
+        OrderController,
+        AddressController
+      );
   }
 }
+

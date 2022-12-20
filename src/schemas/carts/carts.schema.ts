@@ -1,5 +1,3 @@
- 
-
 import * as mongoose from "mongoose";
 import { ICart } from "src/dtos/carts/carts.dto";
 

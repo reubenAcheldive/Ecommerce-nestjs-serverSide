@@ -1,7 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import mongoose from "mongoose";
 import { IAddressValidator } from "src/dtos/address/address.dto";
- 
 
 export type AddressDocuments = Address & Document;
 

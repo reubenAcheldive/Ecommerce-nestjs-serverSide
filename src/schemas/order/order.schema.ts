@@ -1,10 +1,6 @@
 import { Schema } from "mongoose";
 import { OrderSchemaDto } from "src/dtos/order/orderSchema.dto";
 
- 
-
- 
-
 export const OrderSchema = new Schema<OrderSchemaDto>({
   cartRef: { type: String, required: true },
   customerRef: { type: String, required: true },
@@ -37,6 +33,7 @@ export const OrderSchema = new Schema<OrderSchemaDto>({
       _id: { type: String },
     },
   ],
+  userName: { type: String },
 });
 // order
 
@@ -46,3 +43,4 @@ export const OrderSchema = new Schema<OrderSchemaDto>({
 //get current Payment by Payment _id
 //close cart to statues 2 and create new Cart
 //time close order
+

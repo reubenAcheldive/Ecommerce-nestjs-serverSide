@@ -1,18 +1,11 @@
-import {
-  Body,
-  Controller,
-
-  Post,
-
-} from "@nestjs/common";
+import { Body, Controller, Post } from "@nestjs/common";
+import { CartServices } from "src/client/carts/services/cart.services";
 import { UserRegister } from "src/dtos/usersAuth/userLogin.dto";
 import { UsersService } from "../service/users.service";
 
-
-
-@Controller("/users")
+@Controller("api/users")
 export class UserRegisterController {
-  constructor(private UsersService: UsersService) { }
+  constructor(private UsersService: UsersService,private cartServices:CartServices) {}
 
   // @UseFilters(AllExceptionsFilter)
   @Post("/register")
@@ -21,10 +14,8 @@ export class UserRegisterController {
     // const che
     const createUser = await this.UsersService.createNewUser(payload);
     const { _id, firstName, lastName, isAdmin, email } = createUser;
-    const authJwtToken = await this.UsersService.createJwtToken(
-      payload.email,
-      false
-    );
+    const authJwtToken = await this.UsersService.createJwtToken({_id: _id.toString()});
+    await this.cartServices.createNewCart(_id.toString())
     return {
       userId: _id,
       firstName,
@@ -35,3 +26,4 @@ export class UserRegisterController {
     };
   }
 }
+

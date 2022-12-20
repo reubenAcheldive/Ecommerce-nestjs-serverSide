@@ -7,7 +7,7 @@ import { UserDocument, Users } from "src/schemas/user/user.schema";
 import * as jwt from "jsonwebtoken";
 import { JWT_Secret } from "src/config";
 import { ChangePersonalDetails } from "src/dtos/usersAuth/changePersonalDetails";
- 
+
 @Injectable()
 export class UsersService {
   salt = bcrypt?.genSaltSync(2);
@@ -16,8 +16,8 @@ export class UsersService {
     @InjectModel(Users.name) private usersModal: Model<UserDocument>
   ) {}
 
-  async createJwtToken(email, roles: boolean) {
-    const authJwtToken = jwt.sign({ email, roles }, JWT_Secret);
+  async createJwtToken({ _id }: { _id: string }) {
+    const authJwtToken = jwt.sign({ _id }, JWT_Secret, { expiresIn: "1h" });
 
     return authJwtToken;
   }
@@ -51,7 +51,7 @@ export class UsersService {
         status: false,
       });
 
-    const authJwtToken = await this.createJwtToken(email, isAdmin);
+    const authJwtToken = await this.createJwtToken({ _id: _id.toString() });
 
     return {
       email,
@@ -84,11 +84,12 @@ export class UsersService {
     return await createdNewUser.save();
   }
 
-  async authJwtToken(emailFromTheUser: string) {
+  async authJwtToken(id: string) {
     const findUser = await this.usersModal.findOne({
-      email: emailFromTheUser,
+      _id:id,
     });
-
+ 
+    
     if (!findUser)
       throw new UnauthorizedException({
         message: "Incorrect password / username",
@@ -97,7 +98,7 @@ export class UsersService {
 
     const { email, firstName, lastName, isAdmin, _id } = findUser;
 
-    const authJwtToken = await this.createJwtToken(email, isAdmin);
+    const authJwtToken = await this.createJwtToken({ _id: _id.toString() });
 
     return {
       email,
@@ -125,9 +126,13 @@ export class UsersService {
       lastName,
       isAdmin: false,
       userId: String(_id),
-      jwt: await this.createJwtToken(user.email, false),
+      jwt: await this.createJwtToken({ _id: user._id.toString() }),
       email: user.email,
     };
   }
+  async findUserById(id: string) {
+    return await this.usersModal.findOne({ _id: id });
+  }
 }
 //"address"
+

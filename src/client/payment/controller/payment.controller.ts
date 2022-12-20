@@ -7,14 +7,18 @@ import {
   Patch,
   Post,
   Put,
+  UseGuards,
 } from "@nestjs/common";
 import { IsString } from "class-validator";
+import { AuthenticationGuard } from "src/guard/authentication.guard";
+import { ClientGuard } from "src/guard/client.guard";
 import { PaymentSchemaDto } from "../../../dtos/payment/payment.dto";
 import { PaymentService } from "../..//payment/services/payment.service";
 interface updatePaymentProps {
   data: PaymentSchemaDto;
 }
-@Controller("/payment")
+@Controller("api/store/payment")
+@UseGuards(AuthenticationGuard , ClientGuard)
 export class PaymentController {
   constructor(private paymentService: PaymentService) {}
 

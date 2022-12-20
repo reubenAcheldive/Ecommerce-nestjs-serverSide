@@ -3,7 +3,6 @@ import {
   ExecutionContext,
   UnauthorizedException,
 } from "@nestjs/common";
-import { Observable } from "rxjs";
 
 export class AuthenticationGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
@@ -12,11 +11,12 @@ export class AuthenticationGuard implements CanActivate {
 
     const user = Request["user"];
 
-    console.log(user);
+    if (!user) {
+   
 
-    // if (!user) {
-    //   throw new UnauthorizedException();
-    // }
+      throw new UnauthorizedException();
+    }
     return true;
   }
 }
+

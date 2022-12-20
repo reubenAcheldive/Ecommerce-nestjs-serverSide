@@ -8,49 +8,29 @@ import {
   Post,
   UseGuards,
 } from "@nestjs/common";
-import { UpdateCartList, updateOneItemInCartItems } from "src/dtos/carts/updateCartProduct";
- 
-import { AuthenticationGuard } from "src/gurds/authentication.guard";
-import { CartServices } from "../services/cart.services";
- 
+import {
+  UpdateCartList,
+  updateOneItemInCartItems,
+} from "src/dtos/carts/updateCartProduct";
 
-@Controller("/")
-@UseGuards(AuthenticationGuard)
+import { AuthenticationGuard } from "src/guard/authentication.guard";
+import { ClientGuard } from "src/guard/client.guard";
+import { CartServices } from "../services/cart.services";
+
+@Controller("api/store")
+@UseGuards(AuthenticationGuard, ClientGuard)
 export class CartController {
   constructor(private cartService: CartServices) {}
   @Get("/get-cart-by-customer-ref/:customerRef")
-  async getCartShopping(@Param("customerRef") customerRef: string) {
+  async getCartByCustomerRef(@Param("customerRef") customerRef: string) {
     if (!customerRef)
-      throw new BadRequestException({
-        success: false,
-        message: "customerRef must provider",
-      });
-    const cartResponse1 = await this.cartService.getCartByCustomerId(
+      throw new BadRequestException({ message: "customerRef is required" });
+    const haveAvailableCart = await this.cartService.getCartByCustomerId(
       customerRef,
       1
     );
-
-    if (cartResponse1.length === 0) {
-      const cartResponse2 = await this.cartService.getCartByCustomerId(
-        customerRef,
-        2
-      );
-
-      if (cartResponse2[cartResponse2.length - 1]) {
-        const lastCart = [cartResponse2[cartResponse2.length - 1]];
-
-        return {
-          message: `Your last order was from ${cartResponse1[0].date}`,
-          cart: lastCart,
-          hasOpenCart: false,
-        };
-      } else {
-        return {
-          message: "Welcome to our shop",
-        };
-      }
-    } else {
-      return cartResponse1[0];
+    if (haveAvailableCart.length > 0) {
+      return haveAvailableCart[0];
     }
   }
 
@@ -94,3 +74,4 @@ export class CartController {
     });
   }
 }
+

@@ -1,7 +1,7 @@
 import { Model } from "mongoose";
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { CategorySchema } from "../../../schemas/CatagoriesAndCities/categories.schema";
+
 import { ICategories } from "../../../dtos/categories/categories.dto";
 @Injectable()
 export class CategoriesService {
@@ -13,7 +13,8 @@ export class CategoriesService {
     return this.categories.find({});
   }
 
-  async createCategory(category: Pick<ICategories, "nameCategory">) {
-    return await (await this.categories.create(category)).save();
+  async createCategory(p) {
+    return await (await this.categories.create(p)).save();
   }
 }
+

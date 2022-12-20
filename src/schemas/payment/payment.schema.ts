@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 import { PaymentSchemaDto } from "src/dtos/payment/payment.dto";
- 
+
 export const PaymentSchema = new Schema<PaymentSchemaDto>({
   cartRef: { type: String, required: true, ref: "Carts" },
   customerRef: { type: String, required: true },
