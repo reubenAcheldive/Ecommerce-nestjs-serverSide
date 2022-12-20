@@ -13,8 +13,8 @@ export class CategoriesService {
     return this.categories.find({});
   }
 
-  async createCategory({ nameCategory }) {
-    return await (await this.categories.create({ nameCategory })).save();
+  async createCategory(p) {
+    return await (await this.categories.create(p)).save();
   }
 }
 

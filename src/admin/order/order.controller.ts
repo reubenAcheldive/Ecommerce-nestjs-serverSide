@@ -1,8 +1,11 @@
-import { Controller, Get, Param } from "@nestjs/common";
+import { Controller, Get, Param, UseGuards } from "@nestjs/common";
 import { get } from "mongoose";
+import { AdminGuard } from "src/guard/admin.guard";
+import { AuthenticationGuard } from "src/guard/authentication.guard";
 import { OrderService } from "./order.service";
 
 @Controller("api/admin/order")
+@UseGuards(AuthenticationGuard, AdminGuard)
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
   @Get("/get-all-order/:page")

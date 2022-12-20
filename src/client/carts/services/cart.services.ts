@@ -8,7 +8,7 @@ import { ICart } from "src/dtos/carts/carts.dto";
 export class CartServices {
   constructor(@InjectModel("Carts") private cartDb: Model<ICart>) {}
 
-  async getCartByCustomerId(customerRef, status): Promise<ICart[]> {
+  async getCartByCustomerId(customerRef:string, status:number): Promise<ICart[]> {
     return await this.cartDb
       .find({ customerRef, status })
       .populate({ path: "items.productRefId" });

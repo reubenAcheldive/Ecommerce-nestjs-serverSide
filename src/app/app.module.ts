@@ -1,5 +1,7 @@
-import { GetUserMiddleware } from "./../middleware/get-user.middleware";
-
+import { AddressController } from "./../client/address/controller/address.controller";
+import { OrderController } from "./../client/order/controller/order.controller";
+import { PaymentController } from "./../client/payment/controller/payment.controller";
+import { CategoryController } from "./../admin/category/category.controller";
 import { AppController } from "./app.controller";
 import { AdminModule } from "./../admin/admin.module";
 import { Module } from "@nestjs/common/decorators";
@@ -16,6 +18,7 @@ import { ClientModule } from "src/client/client.module";
 import { UserModule } from "src/client/user/user.module";
 import { RouterModule } from "@nestjs/core/router";
 import { LazyModuleLoader } from "@nestjs/core/injector";
+import { GetUserMiddlewareMiddleware } from "src/middleware/get-user-middleware.middleware";
 
 @Module({
   imports: [
@@ -40,7 +43,15 @@ import { LazyModuleLoader } from "@nestjs/core/injector";
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {
-    consumer.apply(GetUserMiddleware).forRoutes(CheckToken, CartController);
+    consumer
+      .apply(GetUserMiddlewareMiddleware)
+      .forRoutes(
+        CheckToken,
+        CartController,
+        PaymentController,
+        OrderController,
+        AddressController
+      );
   }
 }
 

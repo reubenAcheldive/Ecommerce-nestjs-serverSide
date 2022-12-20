@@ -33,6 +33,7 @@ export const OrderSchema = new Schema<OrderSchemaDto>({
       _id: { type: String },
     },
   ],
+  userName: { type: String },
 });
 // order
 
@@ -42,3 +43,4 @@ export const OrderSchema = new Schema<OrderSchemaDto>({
 //get current Payment by Payment _id
 //close cart to statues 2 and create new Cart
 //time close order
+

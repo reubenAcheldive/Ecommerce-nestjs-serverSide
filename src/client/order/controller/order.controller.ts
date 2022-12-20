@@ -1,33 +1,33 @@
 import {
   Body,
   Controller,
-  ForbiddenException,
   Get,
-  Header,
   Param,
   Post,
   Res,
   StreamableFile,
+  UseGuards,
 } from "@nestjs/common";
 import { OrderSchemaDto } from "../../../dtos/order/orderSchema.dto";
-import { CartServices } from "../..//carts/services/cart.services";
+
 import { OrderServices } from "../..//order/services/order.services";
-import { GeneratorPDfService } from "../..//pdf/services/generatorPDf.service";
 
 import { createReadStream } from "fs";
 import { join } from "path";
 import type { Response } from "express";
-import { dirname } from "path";
+import { AuthenticationGuard } from "src/guard/authentication.guard";
+import { ClientGuard } from "src/guard/client.guard";
+
 @Controller("api/store/order")
+@UseGuards(AuthenticationGuard, ClientGuard)
 export class OrderController {
-  constructor(
-    private orderService: OrderServices,
-    private cartService: CartServices
-  ) {}
+  constructor(private orderService: OrderServices) {}
   @Post("/createNewOrder")
   async createNewOrderForCustomer(
-    @Body() payload: Required<Omit<OrderSchemaDto, "addressRef">>
+    @Body() payload: Required<Omit<OrderSchemaDto, "addressRef" | "userName">>
   ) {
+ 
+
     return await this.orderService.createNewOrder(payload);
   }
 
@@ -36,8 +36,7 @@ export class OrderController {
     @Res({ passthrough: true }) res: Response,
     @Param("_id") _id: string
   ): StreamableFile {
-    console.log(_id);
-    const nameFile = ` ${_id}.pdf`;
+     const nameFile = ` ${_id}.pdf`;
 
     const t = join(process.cwd(), `src/orderFiles/${_id}.pdf`);
     const file = createReadStream(t);
@@ -59,3 +58,4 @@ export class OrderController {
     return DateDelivery;
   }
 }
+

@@ -13,11 +13,7 @@ export class AuthorizationGuard implements CanActivate {
     const host = context.switchToHttp(),
       request = host.getRequest();
     const user = request["user"];
-    const allowed = this.isAllowed(user.isAdmin);
-
-    if (!allowed) {
-      throw new ForbiddenException();
-    }
+ 
 
     return true;
   }
@@ -32,3 +28,4 @@ export class AuthorizationGuard implements CanActivate {
     return allowed;
   }
 }
+

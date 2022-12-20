@@ -55,4 +55,8 @@ export class OrderSchemaDto {
       _id: string;
     }
   ];
+  @IsOptional()
+  @IsString()
+  userName?: string;
 }
+

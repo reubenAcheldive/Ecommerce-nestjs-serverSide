@@ -7,7 +7,7 @@ export class CategoriesContoller {
 
   @Get("/")
   async getCategories() {
-    console.log(2);
+  
     
     return await this.categoriesService.fetchCategories();
   }

@@ -29,5 +29,8 @@ export class ProductsService {
       getProducts,
     };
   }
+  async deleteProduct(id: string) {
+    await await this.productDb.findByIdAndDelete(id);
+  }
 }
 

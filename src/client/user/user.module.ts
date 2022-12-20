@@ -3,6 +3,7 @@ import { RouterModule } from "@nestjs/core";
 import { MongooseModule } from "@nestjs/mongoose";
 
 import { Users, UsersSchema } from "../../schemas/user/user.schema";
+import { CartModule } from "../carts/cart.module";
 import { CheckToken } from "./controllers/checkToken.contoller";
 import { UserLoginController } from "./controllers/Login.controller";
 import { UserRegisterController } from "./controllers/Register.controller";
@@ -12,6 +13,7 @@ import { UsersService } from "./service/users.service";
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Users.name, schema: UsersSchema }]),
+    CartModule
   ],
   controllers: [
     UserLoginController,

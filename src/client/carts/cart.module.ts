@@ -10,6 +10,6 @@ import { CartServices } from "./services/cart.services";
   imports: [DbCartsModule],
   controllers: [CartController],
   providers: [CartServices],
-  exports: [],
+  exports: [CartServices],
 })
 export class CartModule {}
