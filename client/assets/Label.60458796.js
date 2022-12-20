@@ -1,0 +1,1 @@
+import{x as h,j as l,y as n}from"./index.b1b4d007.js";const x=({children:m,color:o="default",disabled:s=!1,value:e,className:r,...c})=>{var a;const t=h().theme.label;return l("label",{className:n(t.base,t.colors[o],s!=null?s:t.disabled,r),...c,children:(a=e!=null?e:m)!=null?a:""})};export{x as L};

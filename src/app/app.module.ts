@@ -19,15 +19,17 @@ import { UserModule } from "src/client/user/user.module";
 import { RouterModule } from "@nestjs/core/router";
 import { LazyModuleLoader } from "@nestjs/core/injector";
 import { GetUserMiddlewareMiddleware } from "src/middleware/get-user-middleware.middleware";
+import { ServeStaticModule } from "@nestjs/serve-static";
+import { join } from "path";
 
 @Module({
   imports: [
-    // ServeStaticModule.forRoot({
-    //   rootPath: join(__dirname, '../../client'),
-    //   serveStaticOptions: {
-    //     redirect: true,
-    //   },
-    // }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '../../client'),
+      serveStaticOptions: {
+        redirect: true,
+      },
+    }),
     ConfigModule.forRoot({
       envFilePath: ".development.env",
       load: [configuration],
