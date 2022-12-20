@@ -10,7 +10,7 @@ import { PaymentService } from "../../payment/services/payment.service";
 import { GeneratorPDfService } from "../../pdf/services/generatorPDf.service";
 import { AddressService } from "../../address/services/address.service";
 import * as fs from "fs";
-import { IOrder } from "../../../utils/CreateReception";
+
 import { UsersService } from "../../user/service/users.service";
 
 @Injectable()
@@ -144,4 +144,3 @@ export class OrderServices {
 //time close order
 //total Price from cart items
 //date to shipment
-

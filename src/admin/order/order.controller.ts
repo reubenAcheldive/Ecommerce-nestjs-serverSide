@@ -1,5 +1,5 @@
 import { Controller, Get, Param, UseGuards } from "@nestjs/common";
-import { get } from "mongoose";
+
 import { AdminGuard } from "src/guard/admin.guard";
 import { AuthenticationGuard } from "src/guard/authentication.guard";
 import { OrderService } from "./order.service";
@@ -13,4 +13,3 @@ export class OrderController {
     return await this.orderService.getOrders({ page, limit: 5 });
   }
 }
-

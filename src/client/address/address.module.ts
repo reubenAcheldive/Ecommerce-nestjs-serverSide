@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
 import { DbAddressModule } from "src/database/db-address/db-address.module";
 
-import { Address, AddressSchema } from "../../schemas/address/Address";
+ 
 import { AddressController } from "./controller/address.controller";
 import { AddressService } from "./services/address.service";
 

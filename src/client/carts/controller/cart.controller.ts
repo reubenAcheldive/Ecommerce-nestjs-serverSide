@@ -2,7 +2,6 @@ import {
   BadRequestException,
   Body,
   Controller,
-  Delete,
   Get,
   Param,
   Post,
@@ -74,4 +73,3 @@ export class CartController {
     });
   }
 }
-

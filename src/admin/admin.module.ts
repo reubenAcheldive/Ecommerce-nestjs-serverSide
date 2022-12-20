@@ -1,4 +1,4 @@
-import { OrderController } from './order/order.controller';
+import { OrderController } from "./order/order.controller";
 import { MiddlewareConsumer } from "@nestjs/common/interfaces";
 import { NestModule } from "@nestjs/common/interfaces";
 import { Module } from "@nestjs/common";
@@ -11,13 +11,11 @@ import { ProductsModule } from "./products/products.module";
 import { OrderModule } from "./order/order.module";
 import { UsersModule } from "./users/users.module";
 import * as UserClientModule from "src/client/user/user.module";
-import { AuthenticationGuard } from "src/guard/authentication.guard";
-import { APP_GUARD } from "@nestjs/core";
-import { AdminGuard } from "src/guard/admin.guard";
+
 import { GetUserMiddlewareMiddleware } from "src/middleware/get-user-middleware.middleware";
 import { UsersController } from "./users/controller/users.controller";
 import { ProductsController } from "./products/products.controller";
-const allDbModules = [DbCategoriesModule, DbProductsModule];
+
 @Module({
   imports: [
     CatagoriesAndCitiesModule,
@@ -31,7 +29,13 @@ const allDbModules = [DbCategoriesModule, DbProductsModule];
 })
 export class AdminModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {
-    consumer.apply(GetUserMiddlewareMiddleware).forRoutes(UsersController,ProductsController,OrderController,CategoryController);
+    consumer
+      .apply(GetUserMiddlewareMiddleware)
+      .forRoutes(
+        UsersController,
+        ProductsController,
+        OrderController,
+        CategoryController
+      );
   }
 }
-

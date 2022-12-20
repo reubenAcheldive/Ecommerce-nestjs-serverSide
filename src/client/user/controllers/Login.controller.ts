@@ -1,12 +1,4 @@
-import {
-  BadRequestException,
-  Body,
-  Controller,
-  Get,
-  Param,
-  Post,
-  UnauthorizedException,
-} from "@nestjs/common";
+import { Body, Controller, Post, UnauthorizedException } from "@nestjs/common";
 import { UserAuthLogin } from "src/dtos/usersAuth/userLogin.dto";
 import { UsersService } from "../service/users.service";
 

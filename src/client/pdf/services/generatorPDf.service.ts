@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import * as PDFDocument from "pdfkit";
-import { IOrder, ReceptionOrderContext } from "src/utils/CreateReception";
-import * as fs from "fs";
+import { IOrder } from "src/utils/CreateReception";
+ 
 @Injectable()
 export class GeneratorPDfService {
   constructor() {}
