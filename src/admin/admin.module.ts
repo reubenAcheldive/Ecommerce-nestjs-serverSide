@@ -27,16 +27,16 @@ import { ProductsController } from "./products/products.controller";
   controllers: [CategoryController],
   providers: [],
 })
-export class AdminModule {}
-// implements NestModule {
-//   configure(consumer: MiddlewareConsumer): void {
-//     consumer
-//       .apply(GetUserMiddlewareMiddleware)
-//       .forRoutes(
-//         UsersController,
-//         ProductsController,
-//         OrderController,
-//         CategoryController
-//       );
-//   }
-// }
+export class AdminModule   implements NestModule {
+    configure(consumer: MiddlewareConsumer): void {
+      consumer
+        .apply(GetUserMiddlewareMiddleware)
+        .forRoutes(
+          UsersController,
+          ProductsController,
+          OrderController,
+          CategoryController
+        );
+    }
+  }
+
